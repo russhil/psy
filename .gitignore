@@ -1,0 +1,47 @@
+# ─── Environment & Secrets ───
+.env
+.env.local
+.env.*.local
+
+# ─── Python ───
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.venv/
+venv/
+dist/
+build/
+
+# ─── Node / Next.js ───
+node_modules/
+.next/
+out/
+.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# ─── IDE / Editor ───
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ─── OS ───
+.DS_Store
+Thumbs.db
+
+# ─── Misc ───
+*.pem
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+*.tsbuildinfo
+.vercel
+coverage/
