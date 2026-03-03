@@ -354,38 +354,38 @@ function NewOrderContent() {
                     {tab === "manual" && (
                         <>
                             {step === "form" && (
-                                <form onSubmit={handleManualSubmit} className="glass-card p-6 space-y-6 animate-fadeIn">
+                                <form onSubmit={handleManualSubmit} className="neo-card p-6 space-y-6 animate-fadeIn">
                                     <div className="grid grid-cols-2 gap-4">
                                         <div className="col-span-2">
                                             <label className="block text-sm text-[var(--muted)] mb-1">Customer Name *</label>
-                                            <input required value={manualForm.customer_name} onChange={(e) => setManualForm({ ...manualForm, customer_name: e.target.value })} className="w-full px-4 py-2.5 bg-[var(--background)] border border-[var(--border-color)] rounded-lg text-sm" />
+                                            <input required value={manualForm.customer_name} onChange={(e) => setManualForm({ ...manualForm, customer_name: e.target.value })} className="w-full px-4 py-3 neo-input text-sm" />
                                         </div>
                                         <div>
                                             <label className="block text-sm text-[var(--muted)] mb-1">Phone</label>
-                                            <input value={manualForm.phone} onChange={(e) => setManualForm({ ...manualForm, phone: e.target.value })} className="w-full px-4 py-2.5 bg-[var(--background)] border border-[var(--border-color)] rounded-lg text-sm" placeholder="+91..." />
+                                            <input value={manualForm.phone} onChange={(e) => setManualForm({ ...manualForm, phone: e.target.value })} className="w-full px-4 py-3 neo-input text-sm" placeholder="+91..." />
                                         </div>
                                         <div>
                                             <label className="block text-sm text-[var(--muted)] mb-1">Instagram</label>
-                                            <input value={manualForm.instagram} onChange={(e) => setManualForm({ ...manualForm, instagram: e.target.value })} className="w-full px-4 py-2.5 bg-[var(--background)] border border-[var(--border-color)] rounded-lg text-sm" placeholder="@handle" />
+                                            <input value={manualForm.instagram} onChange={(e) => setManualForm({ ...manualForm, instagram: e.target.value })} className="w-full px-4 py-3 neo-input text-sm" placeholder="@handle" />
                                         </div>
                                         <div>
                                             <label className="block text-sm text-[var(--muted)] mb-1">Artist</label>
-                                            <select value={manualForm.artist_id} onChange={(e) => setManualForm({ ...manualForm, artist_id: e.target.value })} className="w-full px-4 py-2.5 bg-[var(--background)] border border-[var(--border-color)] rounded-lg text-sm">
+                                            <select value={manualForm.artist_id} onChange={(e) => setManualForm({ ...manualForm, artist_id: e.target.value })} className="w-full px-4 py-3 neo-input text-sm">
                                                 <option value="">Select artist</option>
                                                 {artists.map((a) => <option key={a.id} value={a.id}>{a.name}</option>)}
                                             </select>
                                         </div>
                                         <div>
                                             <label className="block text-sm text-[var(--muted)] mb-1">Date</label>
-                                            <input type="date" value={manualForm.order_date} onChange={(e) => setManualForm({ ...manualForm, order_date: e.target.value })} className="w-full px-4 py-2.5 bg-[var(--background)] border border-[var(--border-color)] rounded-lg text-sm" />
+                                            <input type="date" value={manualForm.order_date} onChange={(e) => setManualForm({ ...manualForm, order_date: e.target.value })} className="w-full px-4 py-3 neo-input text-sm" />
                                         </div>
                                         <div className="col-span-2">
                                             <label className="block text-sm text-[var(--muted)] mb-1">Service / Product</label>
-                                            <input value={manualForm.service_description} onChange={(e) => setManualForm({ ...manualForm, service_description: e.target.value })} className="w-full px-4 py-2.5 bg-[var(--background)] border border-[var(--border-color)] rounded-lg text-sm" placeholder="e.g. Full sleeve tattoo" />
+                                            <input value={manualForm.service_description} onChange={(e) => setManualForm({ ...manualForm, service_description: e.target.value })} className="w-full px-4 py-3 neo-input text-sm" placeholder="e.g. Full sleeve tattoo" />
                                         </div>
                                         <div>
                                             <label className="block text-sm text-[var(--muted)] mb-1">Payment Mode</label>
-                                            <select value={manualForm.payment_mode} onChange={(e) => setManualForm({ ...manualForm, payment_mode: e.target.value })} className="w-full px-4 py-2.5 bg-[var(--background)] border border-[var(--border-color)] rounded-lg text-sm">
+                                            <select value={manualForm.payment_mode} onChange={(e) => setManualForm({ ...manualForm, payment_mode: e.target.value })} className="w-full px-4 py-3 neo-input text-sm">
                                                 <option value="cash">Cash</option>
                                                 <option value="UPI">UPI</option>
                                                 <option value="card">Card</option>
@@ -393,7 +393,7 @@ function NewOrderContent() {
                                         </div>
                                         <div>
                                             <label className="block text-sm text-[var(--muted)] mb-1">Source</label>
-                                            <select value={manualForm.source} onChange={(e) => setManualForm({ ...manualForm, source: e.target.value })} className="w-full px-4 py-2.5 bg-[var(--background)] border border-[var(--border-color)] rounded-lg text-sm">
+                                            <select value={manualForm.source} onChange={(e) => setManualForm({ ...manualForm, source: e.target.value })} className="w-full px-4 py-3 neo-input text-sm">
                                                 <option value="">Select source</option>
                                                 <option value="instagram">Instagram</option>
                                                 <option value="walk-in">Walk-in</option>
@@ -403,30 +403,30 @@ function NewOrderContent() {
                                         </div>
                                         <div>
                                             <label className="block text-sm text-[var(--muted)] mb-1">Deposit (₹)</label>
-                                            <input type="number" value={manualForm.deposit} onChange={(e) => setManualForm({ ...manualForm, deposit: e.target.value })} className="w-full px-4 py-2.5 bg-[var(--background)] border border-[var(--border-color)] rounded-lg text-sm" placeholder="0" />
+                                            <input type="number" value={manualForm.deposit} onChange={(e) => setManualForm({ ...manualForm, deposit: e.target.value })} className="w-full px-4 py-3 neo-input text-sm" placeholder="0" />
                                         </div>
                                         <div>
                                             <label className="block text-sm text-[var(--muted)] mb-1">Total (₹)</label>
-                                            <input type="number" value={manualForm.total} onChange={(e) => setManualForm({ ...manualForm, total: e.target.value })} className="w-full px-4 py-2.5 bg-[var(--background)] border border-[var(--border-color)] rounded-lg text-sm" placeholder="0" />
+                                            <input type="number" value={manualForm.total} onChange={(e) => setManualForm({ ...manualForm, total: e.target.value })} className="w-full px-4 py-3 neo-input text-sm" placeholder="0" />
                                         </div>
                                         <div className="col-span-2">
                                             <label className="block text-sm text-[var(--muted)] mb-1">Comments</label>
-                                            <textarea value={manualForm.comments} onChange={(e) => setManualForm({ ...manualForm, comments: e.target.value })} className="w-full px-4 py-2.5 bg-[var(--background)] border border-[var(--border-color)] rounded-lg text-sm resize-none" rows={2} />
+                                            <textarea value={manualForm.comments} onChange={(e) => setManualForm({ ...manualForm, comments: e.target.value })} className="w-full px-4 py-3 neo-input text-sm resize-none" rows={2} />
                                         </div>
                                     </div>
-                                    <button type="submit" disabled={loading} className="w-full py-3 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white rounded-lg font-medium flex items-center justify-center gap-2 disabled:opacity-50">
+                                    <button type="submit" disabled={loading} className="w-full py-3 neo-btn neo-btn-primary font-bold flex items-center justify-center gap-2 disabled:opacity-50 transition-all border-none!">
                                         {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <><ArrowRight className="w-5 h-5" /> Create Order</>}
                                     </button>
                                 </form>
                             )}
                             {step === "success" && (
-                                <div className="glass-card p-8 text-center animate-fadeIn">
+                                <div className="neo-card p-8 text-center animate-fadeIn">
                                     <CheckCircle2 className="w-16 h-16 text-[var(--success)] mx-auto mb-4" />
                                     <h2 className="text-xl font-bold mb-2">Order Created!</h2>
                                     <p className="text-[var(--muted)] mb-6">The order has been saved successfully.</p>
                                     <div className="flex gap-3 justify-center">
-                                        <button onClick={() => router.push("/")} className="px-6 py-2.5 bg-[var(--surface-hover)] rounded-lg text-sm">Go to Dashboard</button>
-                                        <button onClick={() => { setStep("form"); setManualForm({ customer_name: "", phone: "", instagram: "", artist_id: "", order_date: new Date().toISOString().split("T")[0], service_description: "", payment_mode: "cash", deposit: "", total: "", comments: "", source: "" }); }} className="px-6 py-2.5 bg-[var(--primary)] text-white rounded-lg text-sm">New Order</button>
+                                        <button onClick={() => router.push("/")} className="px-6 py-3 neo-btn text-sm">Go to Dashboard</button>
+                                        <button onClick={() => { setStep("form"); setManualForm({ customer_name: "", phone: "", instagram: "", artist_id: "", order_date: new Date().toISOString().split("T")[0], service_description: "", payment_mode: "cash", deposit: "", total: "", comments: "", source: "" }); }} className="px-6 py-3 neo-btn neo-btn-primary text-sm border-none!">New Order</button>
                                     </div>
                                 </div>
                             )}

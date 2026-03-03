@@ -78,7 +78,7 @@ function DashboardContent() {
   return (
     <div className="flex min-h-screen">
       <Sidebar />
-      <main className="flex-1 ml-64 p-8">
+      <main className="flex-1 ml-[272px] p-8">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold">Dashboard</h1>
@@ -88,57 +88,63 @@ function DashboardContent() {
         </div>
 
         {/* Metric Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <div className="glass-card p-6 animate-fadeIn">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center">
-                <Users className="w-5 h-5 text-purple-400" />
-              </div>
-              <span className="text-sm text-[var(--muted)]">Total Customers</span>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="neo-card p-6 animate-fadeIn">
+            <div className="flex justify-between items-start mb-4">
+              <span className="text-[var(--muted)] text-xs font-bold uppercase tracking-wider">Total Customers</span>
+              <span className="text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded text-xs font-bold flex items-center">
+                <TrendingUp className="w-3 h-3 mr-1" />
+                Active
+              </span>
             </div>
-            <p className="text-3xl font-bold">{totalCustomers}</p>
+            <p className="text-3xl font-bold tracking-tight mb-1">{totalCustomers}</p>
+            <p className="text-xs text-[var(--muted)]">Across all sources</p>
           </div>
 
-          <div className="glass-card p-6 animate-fadeIn" style={{ animationDelay: "0.1s" }}>
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center">
-                <TrendingUp className="w-5 h-5 text-emerald-400" />
-              </div>
-              <span className="text-sm text-[var(--muted)]">Total Revenue</span>
+          <div className="neo-card p-6 animate-fadeIn" style={{ animationDelay: "0.1s" }}>
+            <div className="flex justify-between items-start mb-4">
+              <span className="text-[var(--muted)] text-xs font-bold uppercase tracking-wider">Total Revenue</span>
+              <span className="text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded text-xs font-bold flex items-center">
+                <TrendingUp className="w-3 h-3 mr-1" />
+                Growing
+              </span>
             </div>
-            <p className="text-3xl font-bold">{formatCurrency(totalRevenue)}</p>
+            <p className="text-3xl font-bold tracking-tight mb-1">{formatCurrency(totalRevenue)}</p>
+            <p className="text-xs text-[var(--muted)]">Lifetime generated</p>
           </div>
 
-          <div className="glass-card p-6 animate-fadeIn" style={{ animationDelay: "0.2s" }}>
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
-                <Calendar className="w-5 h-5 text-amber-400" />
-              </div>
-              <span className="text-sm text-[var(--muted)]">Avg. Spend per Customer</span>
+          <div className="neo-card p-6 animate-fadeIn" style={{ animationDelay: "0.2s" }}>
+            <div className="flex justify-between items-start mb-4">
+              <span className="text-[var(--muted)] text-xs font-bold uppercase tracking-wider">Avg. Spend</span>
+              <span className="text-[var(--primary)] bg-[var(--primary)]/10 px-2 py-0.5 rounded text-xs font-bold flex items-center">
+                <TrendingUp className="w-3 h-3 mr-1" />
+                Stable
+              </span>
             </div>
-            <p className="text-3xl font-bold">{formatCurrency(avgSpend)}</p>
+            <p className="text-3xl font-bold tracking-tight mb-1">{formatCurrency(avgSpend)}</p>
+            <p className="text-xs text-[var(--muted)]">Avg per customer</p>
           </div>
         </div>
 
         {/* Search & Filters Bar */}
-        <div className="glass-card p-4 mb-6">
+        <div className="glass-panel p-4 mb-6">
           <div className="flex items-center gap-4">
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--muted)]" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--muted)]" />
               <input
                 id="customer-search"
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search by name, phone, or Instagram..."
-                className="w-full pl-10 pr-4 py-2.5 bg-[var(--background)] border border-[var(--border-color)] rounded-lg text-sm text-[var(--foreground)] placeholder-[var(--muted)]"
+                className="w-full pl-12 pr-4 py-3 neo-input text-sm text-[var(--foreground)] placeholder-[var(--muted)]"
               />
             </div>
             <button
               onClick={() => setShowFilters(!showFilters)}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm transition-colors ${showFilters
-                ? "bg-[var(--primary-muted)] text-[var(--primary)]"
-                : "bg-[var(--surface-hover)] text-[var(--muted)] hover:text-[var(--foreground)]"
+              className={`flex items-center gap-2 px-6 py-3 neo-btn text-sm ${showFilters
+                ? "bg-[var(--primary-muted)] text-[var(--primary)] shadow-[inset_3px_3px_6px_rgba(0,0,0,0.1),inset_-3px_-3px_6px_rgba(255,255,255,0.1)] border-transparent!"
+                : "text-[var(--muted)]"
                 }`}
             >
               <Filter className="w-4 h-4" />
@@ -154,7 +160,7 @@ function DashboardContent() {
                 <select
                   value={sourceFilter}
                   onChange={(e) => setSourceFilter(e.target.value)}
-                  className="w-full px-3 py-2 bg-[var(--background)] border border-[var(--border-color)] rounded-lg text-sm text-[var(--foreground)]"
+                  className="w-full px-4 py-3 neo-input text-sm text-[var(--foreground)]"
                 >
                   <option value="">All Sources</option>
                   <option value="instagram">Instagram</option>
@@ -176,7 +182,7 @@ function DashboardContent() {
         </div>
 
         {/* Customer Table */}
-        <div className="glass-card overflow-hidden">
+        <div className="glass-panel overflow-hidden">
           {loading ? (
             <div className="flex items-center justify-center py-20">
               <Loader2 className="w-6 h-6 animate-spin text-[var(--primary)]" />
@@ -222,7 +228,7 @@ function DashboardContent() {
                     >
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-purple-500/20 to-cyan-500/20 border border-[var(--border-color)] flex items-center justify-center text-sm font-medium text-[var(--primary)]">
+                          <div className="w-9 h-9 rounded-full bg-[var(--primary-muted)] border border-[var(--primary)]/20 flex items-center justify-center text-sm font-medium text-[var(--primary)]">
                             {customer.name.charAt(0)}
                           </div>
                           <div>
