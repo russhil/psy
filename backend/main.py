@@ -544,12 +544,10 @@ async def campaign_send(req: CampaignSend, _user: str = Depends(get_current_user
     })
     campaign_id = campaign.get("id")
 
-    # Gather customer data
-    customers = []
-    for cid in req.customer_ids:
-        c = get_customer_by_id(cid)
-        if c:
-            customers.append(c)
+    # Gather customer data in a single batch query
+    from database import get_db
+    cust_resp = get_db().table("customers").select("*").in_("id", req.customer_ids).execute()
+    customers = cust_resp.data or []
 
     # Send batch
     results = whatsapp_utils.send_batch_template(

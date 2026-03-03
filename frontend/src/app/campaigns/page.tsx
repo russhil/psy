@@ -38,6 +38,38 @@ function CampaignsContent() {
     const [sendResults, setSendResults] = useState<Array<{ customer_name: string; success: boolean; error?: string }>>([]);
     const [loading, setLoading] = useState(false);
     const [templatesLoading, setTemplatesLoading] = useState(false);
+    const [isRestored, setIsRestored] = useState(false);
+
+    // Restore state from sessionStorage on mount
+    useEffect(() => {
+        const saved = sessionStorage.getItem("psy_campaigns_state");
+        if (saved) {
+            try {
+                const parsed = JSON.parse(saved);
+                if (parsed.step) setStep(parsed.step);
+                if (parsed.filterText) setFilterText(parsed.filterText);
+                if (parsed.selectedTemplate) setSelectedTemplate(parsed.selectedTemplate);
+                if (parsed.matchedCustomers) setMatchedCustomers(parsed.matchedCustomers);
+                if (parsed.selectedIds) setSelectedIds(new Set(parsed.selectedIds));
+            } catch (err) {
+                console.error("Failed to restore campaigns state", err);
+            }
+        }
+        setIsRestored(true);
+    }, []);
+
+    // Save state to sessionStorage on change
+    useEffect(() => {
+        if (!isRestored) return;
+        const stateToSave = {
+            step,
+            filterText,
+            selectedTemplate,
+            matchedCustomers,
+            selectedIds: Array.from(selectedIds),
+        };
+        sessionStorage.setItem("psy_campaigns_state", JSON.stringify(stateToSave));
+    }, [isRestored, step, filterText, selectedTemplate, matchedCustomers, selectedIds]);
 
     useEffect(() => {
         if (!authLoading && !isAuthenticated) router.push("/login");
@@ -125,7 +157,7 @@ function CampaignsContent() {
     return (
         <div className="flex min-h-screen">
             <Sidebar />
-            <main className="flex-1 ml-[272px] p-8">
+            <main className="flex-1 ml-0 md:ml-[272px] p-4 md:p-8 pt-16 md:pt-8">
                 <div className="max-w-4xl mx-auto">
                     <h1 className="text-3xl font-bold mb-2">WhatsApp Campaigns</h1>
                     <p className="text-[var(--muted)] mb-8">Send template messages to filtered customer segments</p>

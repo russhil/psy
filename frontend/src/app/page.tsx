@@ -27,6 +27,31 @@ function DashboardContent() {
   const [search, setSearch] = useState("");
   const [sourceFilter, setSourceFilter] = useState("");
   const [showFilters, setShowFilters] = useState(false);
+  const [isRestored, setIsRestored] = useState(false);
+
+  // Restore cached state on mount
+  useEffect(() => {
+    const saved = sessionStorage.getItem("psy_dashboard_state");
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed.search) setSearch(parsed.search);
+        if (parsed.sourceFilter) setSourceFilter(parsed.sourceFilter);
+        if (parsed.showFilters) setShowFilters(parsed.showFilters);
+      } catch (err) {
+        console.error("Failed to restore dashboard state", err);
+      }
+    }
+    setIsRestored(true);
+  }, []);
+
+  // Save state to sessionStorage on change
+  useEffect(() => {
+    if (!isRestored) return;
+    sessionStorage.setItem("psy_dashboard_state", JSON.stringify({
+      search, sourceFilter, showFilters,
+    }));
+  }, [isRestored, search, sourceFilter, showFilters]);
 
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
@@ -78,7 +103,7 @@ function DashboardContent() {
   return (
     <div className="flex min-h-screen">
       <Sidebar />
-      <main className="flex-1 ml-[272px] p-8">
+      <main className="flex-1 ml-0 md:ml-[272px] p-4 md:p-8 pt-16 md:pt-8">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold">Dashboard</h1>

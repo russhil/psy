@@ -75,6 +75,55 @@ def get_artist_by_name(name: str) -> dict | None:
 # Customers
 # ━━━━━━━━━━━━━━━━━━━
 
+def _batch_customer_metrics(customer_ids: list[str]) -> dict[str, dict]:
+    """Batch-fetch metrics for multiple customers in 2 queries instead of 2*N."""
+    if not customer_ids:
+        return {}
+
+    # Single query: all orders for all these customers
+    orders_resp = get_db().table("orders").select(
+        "customer_id, total, order_date, artist_id"
+    ).in_("customer_id", customer_ids).order("order_date", desc=True).execute()
+    all_orders = orders_resp.data or []
+
+    # Group orders by customer
+    orders_by_cust: dict[str, list] = {}
+    artist_ids_needed = set()
+    for o in all_orders:
+        cid = o["customer_id"]
+        orders_by_cust.setdefault(cid, []).append(o)
+        if o.get("artist_id"):
+            artist_ids_needed.add(o["artist_id"])
+
+    # Single query: all artist names we need
+    artist_names = {}
+    if artist_ids_needed:
+        artists_resp = get_db().table("artists").select("id, name").in_(
+            "id", list(artist_ids_needed)
+        ).execute()
+        for a in (artists_resp.data or []):
+            artist_names[a["id"]] = a["name"]
+
+    # Compute metrics per customer
+    metrics = {}
+    for cid in customer_ids:
+        orders = orders_by_cust.get(cid, [])
+        lifetime_spend = sum(float(o.get("total", 0)) for o in orders)
+        visit_count = len(orders)
+        last_visit_date = orders[0]["order_date"] if orders else None
+        last_artist_id = orders[0]["artist_id"] if orders else None
+        last_artist_name = artist_names.get(last_artist_id) if last_artist_id else None
+
+        metrics[cid] = {
+            "lifetime_spend": lifetime_spend,
+            "visit_count": visit_count,
+            "last_visit_date": last_visit_date,
+            "last_artist_id": last_artist_id,
+            "last_artist_name": last_artist_name,
+        }
+    return metrics
+
+
 def get_customers(
     search: str = "",
     source: str = "",
@@ -98,10 +147,13 @@ def get_customers(
     resp = q.order("created_at", desc=True).range(offset, offset + limit - 1).execute()
     customers = resp.data or []
 
-    # Enrich with order metrics
+    # Batch-fetch metrics (2 queries instead of 2*N)
+    cust_ids = [c["id"] for c in customers]
+    all_metrics = _batch_customer_metrics(cust_ids)
+
     enriched = []
     for c in customers:
-        metrics = get_customer_metrics(c["id"])
+        metrics = all_metrics.get(c["id"], {})
         c.update(metrics)
 
         # Apply post-query filters
@@ -278,9 +330,11 @@ def search_customers_by_conditions(simple_filters: list, computed_filters: list)
     if order_matched_ids is not None:
         customers = [c for c in customers if c["id"] in order_matched_ids]
 
-    # Step 4: Enrich with metrics
+    # Step 4: Enrich with metrics (batch)
+    cust_ids = [c["id"] for c in customers]
+    all_metrics = _batch_customer_metrics(cust_ids)
     for c in customers:
-        c.update(get_customer_metrics(c["id"]))
+        c.update(all_metrics.get(c["id"], {}))
 
     # Step 5: Apply computed filters
     if computed_filters:

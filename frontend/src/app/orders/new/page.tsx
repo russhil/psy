@@ -94,6 +94,7 @@ function NewOrderContent() {
     const [saveResult, setSaveResult] = useState<{ saved: number; failed: number } | null>(null);
     const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const cameraInputRef = useRef<HTMLInputElement>(null);
     const [isRestored, setIsRestored] = useState(false);
 
     useEffect(() => {
@@ -228,7 +229,17 @@ function NewOrderContent() {
 
     const updateRow = (rowId: string, key: keyof OrderRow, value: string) => {
         setOcrRows((prev) =>
-            prev.map((r) => (r.id === rowId ? { ...r, [key]: value } : r))
+            prev.map((r) => {
+                if (r.id !== rowId) return r;
+                const updated = { ...r, [key]: value };
+                // Auto-sync: if deposit changes and exceeds total, bump total
+                if (key === "deposit") {
+                    const dep = parseFloat(value) || 0;
+                    const tot = parseFloat(r.total) || 0;
+                    if (dep > tot) updated.total = value;
+                }
+                return updated;
+            })
         );
     };
 
@@ -325,7 +336,7 @@ function NewOrderContent() {
     return (
         <div className="flex min-h-screen">
             <Sidebar />
-            <main className="flex-1 ml-64 p-8">
+            <main className="flex-1 ml-0 md:ml-64 p-4 md:p-8 pt-16 md:pt-8">
                 <div className={tab === "ocr" && ocrStep === "review" ? "max-w-[100%]" : "max-w-3xl mx-auto"}>
                     <h1 className="text-3xl font-bold mb-2">New Order</h1>
                     <p className="text-[var(--muted)] mb-8">Create orders manually or scan a handwritten note with AI</p>
@@ -449,6 +460,50 @@ function NewOrderContent() {
                                         </div>
                                     </div>
 
+                                    {/* Camera + File picker buttons */}
+                                    <div className="grid grid-cols-2 gap-3 mb-4">
+                                        <button
+                                            type="button"
+                                            onClick={() => cameraInputRef.current?.click()}
+                                            className="py-3 px-4 neo-btn text-sm font-medium flex items-center justify-center gap-2 hover:border-[var(--primary)]/30 transition-all"
+                                        >
+                                            <Camera className="w-5 h-5 text-[var(--primary)]" />
+                                            <span>Take Photo</span>
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => fileInputRef.current?.click()}
+                                            className="py-3 px-4 neo-btn text-sm font-medium flex items-center justify-center gap-2 hover:border-[var(--primary)]/30 transition-all"
+                                        >
+                                            <ImageIcon className="w-5 h-5 text-[var(--accent)]" />
+                                            <span>Choose File</span>
+                                        </button>
+                                    </div>
+
+                                    {/* Hidden file inputs */}
+                                    <input
+                                        ref={cameraInputRef}
+                                        type="file"
+                                        accept="image/*"
+                                        capture="environment"
+                                        className="hidden"
+                                        onChange={(e) => {
+                                            const f = e.target.files?.[0];
+                                            if (f) handleFileSelect(f);
+                                        }}
+                                    />
+                                    <input
+                                        ref={fileInputRef}
+                                        type="file"
+                                        accept="image/*"
+                                        className="hidden"
+                                        onChange={(e) => {
+                                            const f = e.target.files?.[0];
+                                            if (f) handleFileSelect(f);
+                                        }}
+                                    />
+
+                                    {/* Drag & drop zone */}
                                     <div
                                         className={`relative border-2 border-dashed rounded-xl p-10 text-center transition-all cursor-pointer ${isDragging
                                             ? "border-[var(--primary)] bg-[var(--primary-muted)]"
@@ -466,17 +521,6 @@ function NewOrderContent() {
                                             if (f && f.type.startsWith("image/")) handleFileSelect(f);
                                         }}
                                     >
-                                        <input
-                                            ref={fileInputRef}
-                                            type="file"
-                                            accept="image/*"
-                                            className="hidden"
-                                            onChange={(e) => {
-                                                const f = e.target.files?.[0];
-                                                if (f) handleFileSelect(f);
-                                            }}
-                                        />
-
                                         {ocrFile && ocrPreviewUrl ? (
                                             <div className="space-y-4">
                                                 <div className="relative inline-block">
@@ -506,7 +550,7 @@ function NewOrderContent() {
                                                 <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-purple-500/10 to-cyan-500/10 flex items-center justify-center">
                                                     <Upload className="w-8 h-8 text-[var(--muted)]" />
                                                 </div>
-                                                <p className="text-lg font-medium mb-1">Drop your order image here</p>
+                                                <p className="text-lg font-medium mb-1">Or drag & drop your image here</p>
                                                 <p className="text-sm text-[var(--muted)]">Supports register pages with multiple entries · JPG, PNG, HEIC</p>
                                             </>
                                         )}

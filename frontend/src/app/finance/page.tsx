@@ -116,7 +116,7 @@ function FinanceContent() {
     return (
         <div className="flex min-h-screen">
             <Sidebar />
-            <main className="flex-1 ml-[272px] p-8">
+            <main className="flex-1 ml-0 md:ml-[272px] p-4 md:p-8 pt-16 md:pt-8">
                 <div className="flex items-center justify-between mb-8">
                     <div>
                         <h1 className="text-3xl font-bold">Financial Dashboard</h1>
