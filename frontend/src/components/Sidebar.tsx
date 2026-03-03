@@ -11,6 +11,7 @@ import {
     DollarSign,
     LogOut,
     Zap,
+    ScanLine,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 

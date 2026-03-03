@@ -5,10 +5,27 @@ function getToken(): string | null {
     return localStorage.getItem("psyshot_token");
 }
 
+// Simple in-memory cache for API GET requests (1 minute TTL)
+const cache = new Map<string, { data: unknown; timestamp: number }>();
+const CACHE_TTL_MS = 60 * 1000; // 1 minute
+
+export const clearApiCache = () => cache.clear();
+
 async function apiFetch<T>(
     path: string,
     options: RequestInit = {}
 ): Promise<T> {
+    const isGet = !options.method || options.method === "GET";
+    const cacheKey = path;
+
+    // 1. Check Cache for GET requests
+    if (isGet && cache.has(cacheKey)) {
+        const cached = cache.get(cacheKey)!;
+        if (Date.now() - cached.timestamp < CACHE_TTL_MS) {
+            return cached.data as T;
+        }
+    }
+
     const token = getToken();
     const headers: Record<string, string> = {
         ...(options.headers as Record<string, string>),
@@ -41,7 +58,18 @@ async function apiFetch<T>(
         throw new Error(error.detail || "API error");
     }
 
-    return res.json();
+    const data = await res.json();
+
+    // 2. Manage Cache
+    if (isGet) {
+        // Save successful GET requests to cache
+        cache.set(cacheKey, { data, timestamp: Date.now() });
+    } else {
+        // Invalidate cache on mutations (POST, PUT, DELETE)
+        cache.clear();
+    }
+
+    return data;
 }
 
 // Auth
@@ -112,6 +140,12 @@ export const api = {
     ocrConfirm: (data: Record<string, unknown>) =>
         apiFetch<{ success: boolean; order: import("@/types").Order; customer_id: string }>(
             "/api/ocr/confirm",
+            { method: "POST", body: JSON.stringify(data) }
+        ),
+
+    ocrBulkConfirm: (data: { session_id: string; orders: Array<{ fields: Record<string, unknown>; create_new_customer: boolean; customer_data: Record<string, unknown> | null }> }) =>
+        apiFetch<{ success: boolean; total: number; saved: number; failed: number; results: Array<{ success: boolean; order_id?: string; customer_name?: string; error?: string }> }>(
+            "/api/ocr/bulk-confirm",
             { method: "POST", body: JSON.stringify(data) }
         ),
 
