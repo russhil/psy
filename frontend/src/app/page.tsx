@@ -16,6 +16,7 @@ import {
   ChevronRight,
   Loader2,
   X,
+  Trash2,
 } from "lucide-react";
 
 function DashboardContent() {
@@ -86,6 +87,18 @@ function DashboardContent() {
     const timer = setTimeout(loadData, 300);
     return () => clearTimeout(timer);
   }, [search, sourceFilter]);
+
+  const handleDeleteCustomer = async (id: string, name: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!confirm(`Are you sure you want to delete "${name}"? This will also delete all their orders.`)) return;
+    try {
+      await api.deleteCustomer(id);
+      setCustomers((prev) => prev.filter((c) => c.id !== id));
+    } catch (err) {
+      console.error("Failed to delete customer:", err);
+      alert("Failed to delete customer. Please try again.");
+    }
+  };
 
   if (authLoading || !isAuthenticated) {
     return (
@@ -219,8 +232,8 @@ function DashboardContent() {
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table>
-                <thead>
+              <table className="w-full">
+                <thead className="hidden md:table-header-group">
                   <tr className="border-b border-[var(--border-color)]">
                     <th className="text-left text-xs font-medium text-[var(--muted)] uppercase tracking-wider px-6 py-4">
                       Customer
@@ -248,10 +261,10 @@ function DashboardContent() {
                     <tr
                       key={customer.id}
                       onClick={() => router.push(`/customers/${customer.id}`)}
-                      className="border-b border-[var(--border-color)]/50 hover:bg-[var(--surface-hover)] cursor-pointer transition-colors animate-fadeIn"
+                      className="border-b border-[var(--border-color)]/50 hover:bg-[var(--surface-hover)] cursor-pointer transition-colors animate-fadeIn flex flex-col md:table-row p-4 md:p-0 gap-2 md:gap-0"
                       style={{ animationDelay: `${idx * 0.03}s` }}
                     >
-                      <td className="px-6 py-4">
+                      <td className="px-2 md:px-6 py-1 md:py-4">
                         <div className="flex items-center gap-3">
                           <div className="w-9 h-9 rounded-full bg-[var(--primary-muted)] border border-[var(--primary)]/20 flex items-center justify-center text-sm font-medium text-[var(--primary)]">
                             {customer.name.charAt(0)}
@@ -264,34 +277,43 @@ function DashboardContent() {
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="px-2 md:px-6 py-1 md:py-4">
                         <p className="text-sm">{customer.phone || "—"}</p>
                         {customer.instagram && (
                           <p className="text-xs text-pink-400">@{customer.instagram}</p>
                         )}
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="px-2 md:px-6 py-1 md:py-4">
                         <span className="text-sm font-semibold text-emerald-400">
                           {formatCurrency(customer.lifetime_spend || 0)}
                         </span>
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="hidden md:table-cell px-6 py-4">
                         <span className="text-sm text-[var(--muted)]">
                           {formatRelativeDate(customer.last_visit_date)}
                         </span>
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="hidden md:table-cell px-6 py-4">
                         <span className="text-sm">{customer.last_artist_name || "—"}</span>
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="hidden md:table-cell px-6 py-4">
                         {customer.source && (
                           <span className={`text-xs px-2 py-1 rounded-full font-medium ${getSourceColor(customer.source)}`}>
                             {customer.source}
                           </span>
                         )}
                       </td>
-                      <td className="px-6 py-4">
-                        <ChevronRight className="w-4 h-4 text-[var(--muted)]" />
+                      <td className="px-2 md:px-6 py-1 md:py-4">
+                        <div className="flex items-center gap-2 justify-end">
+                          <button
+                            onClick={(e) => handleDeleteCustomer(customer.id, customer.name, e)}
+                            className="p-2 rounded-lg text-[var(--muted)] hover:text-red-400 hover:bg-red-500/10 transition-all"
+                            title="Delete customer"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                          <ChevronRight className="w-4 h-4 text-[var(--muted)] hidden md:block" />
+                        </div>
                       </td>
                     </tr>
                   ))}

@@ -22,6 +22,7 @@ import {
     TrendingUp,
     Hash,
     Palette,
+    Trash2,
 } from "lucide-react";
 
 function ProfileContent() {
@@ -79,6 +80,16 @@ function ProfileContent() {
         }
     };
 
+    const handleDelete = async () => {
+        if (!confirm(`Are you sure you want to delete "${customer?.name}"? This will also delete all their orders and cannot be undone.`)) return;
+        try {
+            await api.deleteCustomer(customerId);
+            router.push("/");
+        } catch {
+            alert("Failed to delete customer. Please try again.");
+        }
+    };
+
     if (authLoading || !isAuthenticated || loading) {
         return (
             <div className="min-h-screen flex items-center justify-center">
@@ -126,12 +137,22 @@ function ProfileContent() {
                                     </div>
                                 </div>
                                 {!editing ? (
-                                    <button
-                                        onClick={() => setEditing(true)}
-                                        className="p-2 rounded-lg text-[var(--muted)] hover:text-[var(--primary)] hover:bg-[var(--primary-muted)] transition-colors"
-                                    >
-                                        <Edit3 className="w-4 h-4" />
-                                    </button>
+                                    <div className="flex gap-1">
+                                        <button
+                                            onClick={() => setEditing(true)}
+                                            className="p-2 rounded-lg text-[var(--muted)] hover:text-[var(--primary)] hover:bg-[var(--primary-muted)] transition-colors"
+                                            title="Edit"
+                                        >
+                                            <Edit3 className="w-4 h-4" />
+                                        </button>
+                                        <button
+                                            onClick={handleDelete}
+                                            className="p-2 rounded-lg text-[var(--muted)] hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                                            title="Delete customer"
+                                        >
+                                            <Trash2 className="w-4 h-4" />
+                                        </button>
+                                    </div>
                                 ) : (
                                     <div className="flex gap-2">
                                         <button

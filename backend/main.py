@@ -22,7 +22,7 @@ from auth import (
 from database import (
     init_db, get_user_by_username, create_user,
     get_customers, get_customer_by_id, check_duplicate_customer,
-    create_customer, update_customer, search_customers_by_conditions,
+    create_customer, update_customer, delete_customer, search_customers_by_conditions,
     get_orders, get_order_by_id, create_order,
     get_expenses, create_expense,
     create_campaign, update_campaign_status,
@@ -247,6 +247,14 @@ async def edit_customer(customer_id: str, req: CustomerUpdate, _user: str = Depe
 async def check_duplicate(req: DuplicateCheck, _user: str = Depends(get_current_user)):
     result = check_duplicate_customer(phone=req.phone, instagram=req.instagram)
     return result
+
+
+@app.delete("/api/customers/{customer_id}")
+async def remove_customer(customer_id: str, _user: str = Depends(get_current_user)):
+    success = delete_customer(customer_id)
+    if not success:
+        raise HTTPException(status_code=500, detail="Failed to delete customer")
+    return {"deleted": True}
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

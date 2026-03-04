@@ -117,9 +117,9 @@ function FinanceContent() {
         <div className="flex min-h-screen">
             <Sidebar />
             <main className="flex-1 ml-0 md:ml-[272px] p-4 md:p-8 pt-16 md:pt-8">
-                <div className="flex items-center justify-between mb-8">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
                     <div>
-                        <h1 className="text-3xl font-bold">Financial Dashboard</h1>
+                        <h1 className="text-2xl sm:text-3xl font-bold">Financial Dashboard</h1>
                         <p className="text-[var(--muted)] mt-1">Revenue, expenses, and profit at a glance</p>
                     </div>
                     <button
@@ -132,30 +132,48 @@ function FinanceContent() {
                 </div>
 
                 {/* Date Range Filter */}
-                <div className="glass-panel p-4 mb-6 flex items-center gap-4">
-                    <Calendar className="w-5 h-5 text-[var(--muted)]" />
-                    <div className="flex items-center gap-2">
+                <div className="glass-panel p-4 mb-6 space-y-3">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+                        <Calendar className="w-5 h-5 text-[var(--muted)] hidden sm:block" />
+                        <div className="flex flex-wrap gap-2">
+                            {[
+                                { label: "Today", getRange: () => { const d = new Date().toISOString().split("T")[0]; return [d, d]; } },
+                                { label: "This Week", getRange: () => { const now = new Date(); const start = new Date(now); start.setDate(now.getDate() - now.getDay()); return [start.toISOString().split("T")[0], now.toISOString().split("T")[0]]; } },
+                                { label: "This Month", getRange: () => { const now = new Date(); const start = new Date(now.getFullYear(), now.getMonth(), 1); return [start.toISOString().split("T")[0], now.toISOString().split("T")[0]]; } },
+                                { label: "This Year", getRange: () => { const now = new Date(); const start = new Date(now.getFullYear(), 0, 1); return [start.toISOString().split("T")[0], now.toISOString().split("T")[0]]; } },
+                            ].map((preset) => (
+                                <button
+                                    key={preset.label}
+                                    onClick={() => { const [from, to] = preset.getRange(); setDateFrom(from); setDateTo(to); }}
+                                    className="px-3 py-1.5 text-xs font-medium rounded-lg neo-btn hover:text-[var(--primary)] transition-all"
+                                >
+                                    {preset.label}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
                         <input
                             type="date"
                             value={dateFrom}
                             onChange={(e) => setDateFrom(e.target.value)}
-                            className="px-4 py-3 neo-input text-sm"
+                            className="w-full sm:w-auto px-4 py-3 neo-input text-sm"
                             placeholder="From"
                         />
-                        <span className="text-[var(--muted)]">to</span>
+                        <span className="text-[var(--muted)] hidden sm:block">to</span>
                         <input
                             type="date"
                             value={dateTo}
                             onChange={(e) => setDateTo(e.target.value)}
-                            className="px-4 py-3 neo-input text-sm"
+                            className="w-full sm:w-auto px-4 py-3 neo-input text-sm"
                             placeholder="To"
                         />
+                        {(dateFrom || dateTo) && (
+                            <button onClick={() => { setDateFrom(""); setDateTo(""); }} className="text-xs text-[var(--muted)] hover:text-[var(--danger)]">
+                                Clear
+                            </button>
+                        )}
                     </div>
-                    {(dateFrom || dateTo) && (
-                        <button onClick={() => { setDateFrom(""); setDateTo(""); }} className="text-xs text-[var(--muted)] hover:text-[var(--danger)]">
-                            Clear
-                        </button>
-                    )}
                 </div>
 
                 {/* NL Expense Input */}

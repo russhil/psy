@@ -17,11 +17,10 @@ export function formatCurrency(amount: number): string {
 export function formatDate(dateStr: string | null | undefined): string {
     if (!dateStr) return "—";
     const d = new Date(dateStr);
-    return d.toLocaleDateString("en-IN", {
-        day: "numeric",
-        month: "short",
-        year: "numeric",
-    });
+    const day = String(d.getDate()).padStart(2, "0");
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const year = String(d.getFullYear()).slice(-2);
+    return `${day}/${month}/${year}`;
 }
 
 export function formatRelativeDate(dateStr: string | null | undefined): string {
@@ -62,4 +61,12 @@ export function getConfidenceColor(confidence: number): string {
     if (confidence >= 80) return "text-green-400 bg-green-400/10 border-green-400/30";
     if (confidence >= 60) return "text-yellow-400 bg-yellow-400/10 border-yellow-400/30";
     return "text-red-400 bg-red-400/10 border-red-400/30";
+}
+
+export function capitalizeWords(str: string): string {
+    return str.replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+export function stripAtSign(handle: string): string {
+    return handle.replace(/^@+/, "");
 }

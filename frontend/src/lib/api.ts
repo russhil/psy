@@ -115,6 +115,11 @@ export const api = {
             { method: "POST", body: JSON.stringify({ phone, instagram }) }
         ),
 
+    deleteCustomer: (id: string) =>
+        apiFetch<{ deleted: boolean }>(`/api/customers/${id}`, {
+            method: "DELETE",
+        }),
+
     // Orders
     getOrders: (customerID?: string) => {
         const query = customerID ? `?customer_id=${customerID}` : "";

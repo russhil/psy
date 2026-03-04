@@ -239,10 +239,13 @@ def check_duplicate_customer(phone: str = "", instagram: str = "") -> dict:
 
 def create_customer(data: dict) -> dict:
     """Create a new customer."""
+    instagram = data.get("instagram")
+    if instagram and isinstance(instagram, str):
+        instagram = instagram.lstrip("@")
     payload = {
         "name": data.get("name", ""),
         "phone": data.get("phone"),
-        "instagram": data.get("instagram"),
+        "instagram": instagram,
         "email": data.get("email"),
         "source": data.get("source"),
         "notes": data.get("notes"),
@@ -518,6 +521,19 @@ def create_ocr_session(data: dict) -> dict:
 def update_ocr_session(session_id: str, data: dict) -> dict:
     resp = get_db().table("ocr_intake_sessions").update(data).eq("id", session_id).execute()
     return resp.data[0] if resp.data else {}
+
+
+def delete_customer(customer_id: str) -> bool:
+    """Delete a customer and their associated orders."""
+    try:
+        # Delete associated orders first
+        get_db().table("orders").delete().eq("customer_id", customer_id).execute()
+        # Delete the customer
+        get_db().table("customers").delete().eq("id", customer_id).execute()
+        return True
+    except Exception as e:
+        logger.error(f"Failed to delete customer {customer_id}: {e}")
+        return False
 
 
 # ━━━━━━━━━━━━━━━━━━━

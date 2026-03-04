@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/components/AuthProvider";
 import Sidebar from "@/components/Sidebar";
 import { api } from "@/lib/api";
-import { getConfidenceColor } from "@/lib/utils";
+import { capitalizeWords, stripAtSign } from "@/lib/utils";
 import type { Artist, OCRResult } from "@/types";
 import {
     Upload,
@@ -61,7 +61,7 @@ const COLUMNS: { key: keyof OrderRow; label: string; width: string; type?: strin
     { key: "date", label: "Date", width: "140px", type: "date" },
     { key: "service_description", label: "Service Type", width: "180px" },
     { key: "payment_mode", label: "Payment", width: "110px", type: "select", options: ["", "cash", "upi", "card", "other"] },
-    { key: "source", label: "Source", width: "120px", type: "select", options: ["", "instagram", "walk-in", "referral", "google", "other"] },
+
     { key: "deposit", label: "Deposit ₹", width: "100px", type: "number" },
     { key: "total", label: "Total ₹", width: "100px", type: "number" },
 ];
@@ -157,9 +157,9 @@ function NewOrderContent() {
         setLoading(true);
         try {
             const custRes = await api.createCustomer({
-                name: manualForm.customer_name,
+                name: capitalizeWords(manualForm.customer_name),
                 phone: manualForm.phone || null,
-                instagram: manualForm.instagram || null,
+                instagram: manualForm.instagram ? stripAtSign(manualForm.instagram) : null,
                 source: manualForm.source || null,
             });
             const custId = custRes.customer?.id;
@@ -231,7 +231,9 @@ function NewOrderContent() {
         setOcrRows((prev) =>
             prev.map((r) => {
                 if (r.id !== rowId) return r;
-                const updated = { ...r, [key]: value };
+                // Auto-capitalize customer names
+                const finalValue = key === "customer_name" ? capitalizeWords(value) : value;
+                const updated = { ...r, [key]: finalValue };
                 // Auto-sync: if deposit changes and exceeds total, bump total
                 if (key === "deposit") {
                     const dep = parseFloat(value) || 0;
@@ -285,9 +287,9 @@ function NewOrderContent() {
                 session_id: ocrResult.session_id,
                 orders: rowsToSave.map((row) => ({
                     fields: {
-                        customer_name: row.customer_name,
+                        customer_name: capitalizeWords(row.customer_name),
                         phone: row.phone || null,
-                        instagram: row.instagram || null,
+                        instagram: row.instagram ? stripAtSign(row.instagram) : null,
                         date: row.date,
                         service_description: row.service_description || null,
                         payment_mode: row.payment_mode || null,
@@ -297,9 +299,9 @@ function NewOrderContent() {
                     },
                     create_new_customer: true,
                     customer_data: {
-                        name: row.customer_name || "Unknown",
+                        name: capitalizeWords(row.customer_name) || "Unknown",
                         phone: row.phone || null,
-                        instagram: row.instagram || null,
+                        instagram: row.instagram ? stripAtSign(row.instagram) : null,
                         source: row.source || null,
                     },
                 })),
@@ -676,10 +678,7 @@ function NewOrderContent() {
                                                                 {col.label}
                                                             </th>
                                                         ))}
-                                                        {/* Confidence column */}
-                                                        <th className="px-3 py-3 border-b border-r border-[var(--border-color)] text-xs font-semibold text-[var(--muted)] uppercase tracking-wider text-center w-16">
-                                                            Conf.
-                                                        </th>
+
                                                         {/* Actions */}
                                                         <th className="px-3 py-3 border-b border-[var(--border-color)] w-10" />
                                                     </tr>
@@ -738,12 +737,7 @@ function NewOrderContent() {
                                                                     )}
                                                                 </td>
                                                             ))}
-                                                            {/* Confidence */}
-                                                            <td className="px-2 py-1 border-b border-r border-[var(--border-color)] text-center">
-                                                                <span className={`text-xs px-1.5 py-0.5 rounded-full font-medium ${getConfidenceColor(row.confidence)}`}>
-                                                                    {row.confidence}%
-                                                                </span>
-                                                            </td>
+
                                                             {/* Delete */}
                                                             <td className="px-2 py-1 border-b border-[var(--border-color)] text-center">
                                                                 <button
