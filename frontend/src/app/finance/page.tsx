@@ -132,7 +132,7 @@ function FinanceContent() {
                 </div>
 
                 {/* Date Range Filter */}
-                <div className="glass-card p-4 mb-6 flex items-center gap-4">
+                <div className="glass-panel p-4 mb-6 flex items-center gap-4">
                     <Calendar className="w-5 h-5 text-[var(--muted)]" />
                     <div className="flex items-center gap-2">
                         <input
@@ -160,7 +160,7 @@ function FinanceContent() {
 
                 {/* NL Expense Input */}
                 {showExpenseInput && (
-                    <div className="glass-card p-6 mb-6 animate-fadeIn">
+                    <div className="glass-panel p-6 mb-6 animate-fadeIn">
                         <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
                             <Sparkles className="w-4 h-4 text-[var(--accent)]" />
                             Log Expense (Natural Language)
@@ -218,7 +218,7 @@ function FinanceContent() {
                 ) : summary ? (
                     <>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                            <div className="glass-card p-6 animate-fadeIn">
+                            <div className="glass-panel p-6 animate-fadeIn">
                                 <div className="flex justify-between items-start mb-4">
                                     <span className="text-[var(--muted)] text-xs font-bold uppercase tracking-wider">Revenue</span>
                                     <span className="text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded text-xs font-bold flex items-center">
@@ -230,7 +230,7 @@ function FinanceContent() {
                                 <p className="text-xs text-[var(--muted)]">{summary.order_count} orders</p>
                             </div>
 
-                            <div className="glass-card p-6 animate-fadeIn" style={{ animationDelay: "0.1s" }}>
+                            <div className="glass-panel p-6 animate-fadeIn" style={{ animationDelay: "0.1s" }}>
                                 <div className="flex justify-between items-start mb-4">
                                     <span className="text-[var(--muted)] text-xs font-bold uppercase tracking-wider">Expenses</span>
                                     <span className="text-red-500 bg-red-500/10 px-2 py-0.5 rounded text-xs font-bold flex items-center">
@@ -242,7 +242,7 @@ function FinanceContent() {
                                 <p className="text-xs text-[var(--muted)]">{summary.expense_count} entries</p>
                             </div>
 
-                            <div className="glass-card p-6 animate-fadeIn" style={{ animationDelay: "0.2s" }}>
+                            <div className="glass-panel p-6 animate-fadeIn" style={{ animationDelay: "0.2s" }}>
                                 <div className="flex justify-between items-start mb-4">
                                     <span className="text-[var(--muted)] text-xs font-bold uppercase tracking-wider">Net Profit</span>
                                     <span className="text-[var(--primary)] bg-[var(--primary)]/10 px-2 py-0.5 rounded text-xs font-bold flex items-center">
@@ -261,7 +261,7 @@ function FinanceContent() {
 
                         {/* Category Breakdown */}
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                            <div className="glass-card p-6 animate-fadeIn" style={{ animationDelay: "0.3s" }}>
+                            <div className="glass-panel p-6 animate-fadeIn" style={{ animationDelay: "0.3s" }}>
                                 <h3 className="text-sm font-semibold text-[var(--muted)] uppercase tracking-wider mb-4 flex items-center gap-2">
                                     <BarChart3 className="w-4 h-4" />
                                     Expense Breakdown
@@ -291,7 +291,7 @@ function FinanceContent() {
                             </div>
 
                             {/* Recent Expenses */}
-                            <div className="glass-card p-6 animate-fadeIn" style={{ animationDelay: "0.4s" }}>
+                            <div className="glass-panel p-6 animate-fadeIn" style={{ animationDelay: "0.4s" }}>
                                 <h3 className="text-sm font-semibold text-[var(--muted)] uppercase tracking-wider mb-4">
                                     Recent Expenses
                                 </h3>

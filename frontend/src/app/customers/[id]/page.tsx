@@ -110,7 +110,7 @@ function ProfileContent() {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     {/* Customer Info Card */}
                     <div className="lg:col-span-1 space-y-6">
-                        <div className="glass-card p-6 animate-fadeIn">
+                        <div className="glass-panel p-6 animate-fadeIn">
                             <div className="flex items-center justify-between mb-6">
                                 <div className="flex items-center gap-4">
                                     <div className="w-14 h-14 rounded-2xl bg-[var(--primary)] flex items-center justify-center text-xl font-bold text-white shadow-sm">
@@ -197,7 +197,7 @@ function ProfileContent() {
                         </div>
 
                         {/* Metrics Card */}
-                        <div className="glass-card p-6 animate-fadeIn" style={{ animationDelay: "0.1s" }}>
+                        <div className="glass-panel p-6 animate-fadeIn" style={{ animationDelay: "0.1s" }}>
                             <h3 className="text-sm font-semibold text-[var(--muted)] uppercase tracking-wider mb-4">
                                 Customer Metrics
                             </h3>
@@ -247,7 +247,7 @@ function ProfileContent() {
 
                     {/* Order History */}
                     <div className="lg:col-span-2">
-                        <div className="glass-card overflow-hidden animate-fadeIn" style={{ animationDelay: "0.2s" }}>
+                        <div className="glass-panel overflow-hidden animate-fadeIn" style={{ animationDelay: "0.2s" }}>
                             <div className="p-6 border-b border-[var(--border-color)]">
                                 <h3 className="text-lg font-semibold">Order History</h3>
                                 <p className="text-sm text-[var(--muted)]">{orders.length} orders</p>
@@ -294,7 +294,7 @@ function ProfileContent() {
 
                         {/* Comments timeline */}
                         {orders.some(o => o.comments) && (
-                            <div className="glass-card p-6 mt-6 animate-fadeIn" style={{ animationDelay: "0.3s" }}>
+                            <div className="glass-panel p-6 mt-6 animate-fadeIn" style={{ animationDelay: "0.3s" }}>
                                 <h3 className="text-sm font-semibold text-[var(--muted)] uppercase tracking-wider mb-4">
                                     Comments History
                                 </h3>

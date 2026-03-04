@@ -449,7 +449,7 @@ function NewOrderContent() {
                         <>
                             {/* Step 1: Upload */}
                             {ocrStep === "upload" && (
-                                <div className="glass-card p-6 animate-fadeIn">
+                                <div className="glass-panel p-6 animate-fadeIn">
                                     <div className="flex items-center gap-3 mb-6">
                                         <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500/20 to-cyan-500/20 flex items-center justify-center">
                                             <ScanLine className="w-5 h-5 text-[var(--primary)]" />
@@ -610,7 +610,7 @@ function NewOrderContent() {
                                                     <button className="p-2.5 bg-[var(--surface)] border border-[var(--border-color)] rounded-lg hover:bg-[var(--surface-hover)] transition-colors">
                                                         <ImageIcon className="w-4 h-4 text-[var(--muted)]" />
                                                     </button>
-                                                    <div className="hidden group-hover:block absolute right-0 top-full mt-2 z-50 p-2 glass-card shadow-2xl">
+                                                    <div className="hidden group-hover:block absolute right-0 top-full mt-2 z-50 p-2 glass-panel shadow-2xl">
                                                         <img
                                                             src={ocrPreviewUrl}
                                                             alt="Source"
@@ -648,7 +648,7 @@ function NewOrderContent() {
                                     )}
 
                                     {/* ━━━ SPREADSHEET TABLE ━━━ */}
-                                    <div className="glass-card overflow-hidden">
+                                    <div className="glass-panel overflow-hidden">
                                         <div className="overflow-x-auto">
                                             <table className="w-full" style={{ minWidth: "1400px" }}>
                                                 <thead>
@@ -773,7 +773,7 @@ function NewOrderContent() {
                                     </div>
 
                                     {/* Summary bar */}
-                                    <div className="glass-card p-4 flex items-center justify-between text-sm">
+                                    <div className="glass-panel p-4 flex items-center justify-between text-sm">
                                         <div className="flex items-center gap-6 text-[var(--muted)]">
                                             <span>{ocrRows.length} row{ocrRows.length !== 1 ? "s" : ""}</span>
                                             <span>{selectedRows.size} selected</span>
@@ -790,7 +790,7 @@ function NewOrderContent() {
 
                             {/* Step 3: Success */}
                             {ocrStep === "success" && (
-                                <div className="glass-card p-8 text-center animate-fadeIn max-w-xl mx-auto">
+                                <div className="glass-panel p-8 text-center animate-fadeIn max-w-xl mx-auto">
                                     <div className="w-20 h-20 mx-auto mb-5 rounded-full bg-[var(--success)]/10 flex items-center justify-center">
                                         <CheckCircle2 className="w-10 h-10 text-[var(--success)]" />
                                     </div>

@@ -187,7 +187,7 @@ function CampaignsContent() {
 
                     {/* Step 1: Select Template */}
                     {step === 1 && (
-                        <div className="glass-card p-6 animate-fadeIn">
+                        <div className="glass-panel p-6 animate-fadeIn">
                             <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
                                 <MessageSquare className="w-5 h-5 text-[var(--primary)]" />
                                 Select Template
@@ -239,7 +239,7 @@ function CampaignsContent() {
 
                     {/* Step 2: Write NL Filter */}
                     {step === 2 && (
-                        <div className="glass-card p-6 animate-fadeIn">
+                        <div className="glass-panel p-6 animate-fadeIn">
                             <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
                                 <Sparkles className="w-5 h-5 text-[var(--accent)]" />
                                 Filter Customers
@@ -282,7 +282,7 @@ function CampaignsContent() {
 
                     {/* Step 3: Preview & Confirm */}
                     {step === 3 && (
-                        <div className="glass-card p-6 animate-fadeIn">
+                        <div className="glass-panel p-6 animate-fadeIn">
                             <div className="flex items-center justify-between mb-4">
                                 <h3 className="text-lg font-semibold flex items-center gap-2">
                                     <Eye className="w-5 h-5 text-[var(--success)]" />
@@ -372,7 +372,7 @@ function CampaignsContent() {
 
                     {/* Step 4: Results */}
                     {step === 4 && (
-                        <div className="glass-card p-6 animate-fadeIn">
+                        <div className="glass-panel p-6 animate-fadeIn">
                             <h3 className="text-lg font-semibold mb-4">Campaign Results</h3>
                             <div className="grid grid-cols-2 gap-4 mb-6">
                                 <div className="p-4 bg-[var(--success)]/10 rounded-lg text-center">
