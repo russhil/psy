@@ -125,7 +125,7 @@ function CampaignsContent() {
     return (
         <div className="flex min-h-screen">
             <Sidebar />
-            <main className="flex-1 ml-64 p-8">
+            <main className="flex-1 ml-[272px] p-8">
                 <div className="max-w-4xl mx-auto">
                     <h1 className="text-3xl font-bold mb-2">WhatsApp Campaigns</h1>
                     <p className="text-[var(--muted)] mb-8">Send template messages to filtered customer segments</p>
@@ -221,7 +221,7 @@ function CampaignsContent() {
                                     value={filterText}
                                     onChange={(e) => setFilterText(e.target.value)}
                                     placeholder='e.g. "All customers who spent more than 10k last month"'
-                                    className="w-full px-4 py-3 bg-[var(--background)] border border-[var(--border-color)] rounded-lg text-sm resize-none focus:border-[var(--accent)]"
+                                    className="w-full px-4 py-3 neo-input text-sm resize-none"
                                     rows={3}
                                 />
                             </div>
@@ -240,8 +240,8 @@ function CampaignsContent() {
                             )}
 
                             <div className="flex gap-3 mt-4">
-                                <button onClick={() => setStep(1)} className="px-6 py-2.5 bg-[var(--surface-hover)] rounded-lg text-sm">Back</button>
-                                <button onClick={handleFilter} disabled={!filterText.trim() || loading} className="flex-1 py-2.5 bg-gradient-to-r from-cyan-500 to-purple-500 text-white rounded-lg text-sm font-medium flex items-center justify-center gap-2 disabled:opacity-50">
+                                <button onClick={() => setStep(1)} className="px-6 py-2.5 neo-btn text-sm">Back</button>
+                                <button onClick={handleFilter} disabled={!filterText.trim() || loading} className="flex-1 py-2.5 neo-btn neo-btn-primary text-white text-sm font-medium flex items-center justify-center gap-2 disabled:opacity-50 transition-colors border-none!">
                                     {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Filter className="w-4 h-4" /> Find Customers</>}
                                 </button>
                             </div>
@@ -329,9 +329,9 @@ function CampaignsContent() {
                                 </div>
                             )}
 
-                            <div className="flex gap-3">
-                                <button onClick={() => setStep(2)} className="px-6 py-2.5 bg-[var(--surface-hover)] rounded-lg text-sm">Back</button>
-                                <button onClick={handleSend} disabled={selectedIds.size === 0 || loading} className="flex-1 py-2.5 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-lg text-sm font-medium flex items-center justify-center gap-2 disabled:opacity-50">
+                            <div className="flex gap-3 mt-6">
+                                <button onClick={() => setStep(2)} className="px-6 py-2.5 neo-btn text-sm">Back</button>
+                                <button onClick={handleSend} disabled={selectedIds.size === 0 || loading} className="flex-1 py-2.5 neo-btn bg-[var(--success)] text-white shadow-[4px_4px_10px_rgba(16,185,129,0.3),-4px_-4px_10px_rgba(255,255,255,0.4)] hover:shadow-[6px_6px_14px_rgba(16,185,129,0.4),-6px_-6px_14px_rgba(255,255,255,0.5)] active:shadow-[inset_4px_4px_8px_rgba(0,0,0,0.2),inset_-4px_-4px_8px_rgba(255,255,255,0.2)] text-sm font-medium flex items-center justify-center gap-2 disabled:opacity-50 transition-all border-none!">
                                     {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Send className="w-4 h-4" /> Send to {selectedIds.size} customers</>}
                                 </button>
                             </div>
@@ -363,7 +363,7 @@ function CampaignsContent() {
                                     </div>
                                 ))}
                             </div>
-                            <button onClick={() => { setStep(1); setSelectedIds(new Set()); setMatchedCustomers([]); setSendResults([]); setFilterText(""); }} className="w-full mt-6 py-2.5 bg-[var(--primary)] text-white rounded-lg text-sm font-medium">
+                            <button onClick={() => { setStep(1); setSelectedIds(new Set()); setMatchedCustomers([]); setSendResults([]); setFilterText(""); }} className="w-full mt-6 py-3 neo-btn neo-btn-primary text-sm font-medium border-none!">
                                 New Campaign
                             </button>
                         </div>

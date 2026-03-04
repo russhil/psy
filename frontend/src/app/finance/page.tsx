@@ -116,7 +116,7 @@ function FinanceContent() {
     return (
         <div className="flex min-h-screen">
             <Sidebar />
-            <main className="flex-1 ml-64 p-8">
+            <main className="flex-1 ml-[272px] p-8">
                 <div className="flex items-center justify-between mb-8">
                     <div>
                         <h1 className="text-3xl font-bold">Financial Dashboard</h1>
@@ -124,7 +124,7 @@ function FinanceContent() {
                     </div>
                     <button
                         onClick={() => setShowExpenseInput(!showExpenseInput)}
-                        className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-purple-500 to-cyan-500 text-white rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
+                        className="neo-btn neo-btn-primary flex items-center gap-2 px-6 py-3 text-sm transition-all border-none!"
                     >
                         <PlusCircle className="w-4 h-4" />
                         Log Expense
@@ -139,7 +139,7 @@ function FinanceContent() {
                             type="date"
                             value={dateFrom}
                             onChange={(e) => setDateFrom(e.target.value)}
-                            className="px-3 py-2 bg-[var(--background)] border border-[var(--border-color)] rounded-lg text-sm"
+                            className="px-4 py-3 neo-input text-sm"
                             placeholder="From"
                         />
                         <span className="text-[var(--muted)]">to</span>
@@ -147,7 +147,7 @@ function FinanceContent() {
                             type="date"
                             value={dateTo}
                             onChange={(e) => setDateTo(e.target.value)}
-                            className="px-3 py-2 bg-[var(--background)] border border-[var(--border-color)] rounded-lg text-sm"
+                            className="px-4 py-3 neo-input text-sm"
                             placeholder="To"
                         />
                     </div>
@@ -170,10 +170,10 @@ function FinanceContent() {
                                 value={expenseText}
                                 onChange={(e) => setExpenseText(e.target.value)}
                                 placeholder='e.g. "Spent 2300 on inks from ABC supplier today paid via UPI"'
-                                className="flex-1 px-4 py-2.5 bg-[var(--background)] border border-[var(--border-color)] rounded-lg text-sm"
+                                className="flex-1 px-4 py-3 neo-input text-sm"
                                 onKeyDown={(e) => e.key === "Enter" && handleParseExpense()}
                             />
-                            <button onClick={handleParseExpense} disabled={parsingExpense || !expenseText.trim()} className="px-4 py-2.5 bg-[var(--primary)] text-white rounded-lg text-sm font-medium disabled:opacity-50">
+                            <button onClick={handleParseExpense} disabled={parsingExpense || !expenseText.trim()} className="px-6 py-3 neo-btn neo-btn-primary text-sm font-medium disabled:opacity-50 border-none!">
                                 {parsingExpense ? <Loader2 className="w-4 h-4 animate-spin" /> : "Parse"}
                             </button>
                         </div>
@@ -191,10 +191,10 @@ function FinanceContent() {
                                             ))}
                                         </div>
                                         <div className="flex gap-3">
-                                            <button onClick={handleConfirmExpense} disabled={savingExpense} className="flex-1 py-2.5 bg-[var(--success)] text-white rounded-lg text-sm font-medium flex items-center justify-center gap-2 disabled:opacity-50">
+                                            <button onClick={handleConfirmExpense} disabled={savingExpense} className="flex-1 py-3 neo-btn bg-[var(--success)] text-white shadow-[4px_4px_10px_rgba(16,185,129,0.3),-4px_-4px_10px_rgba(255,255,255,0.4)] hover:shadow-[6px_6px_14px_rgba(16,185,129,0.4),-6px_-6px_14px_rgba(255,255,255,0.5)] active:shadow-[inset_4px_4px_8px_rgba(0,0,0,0.2),inset_-4px_-4px_8px_rgba(255,255,255,0.2)] text-sm font-medium flex items-center justify-center gap-2 disabled:opacity-50 border-none!">
                                                 {savingExpense ? <Loader2 className="w-4 h-4 animate-spin" /> : <><CheckCircle2 className="w-4 h-4" /> Confirm & Save</>}
                                             </button>
-                                            <button onClick={() => setParsedExpense(null)} className="px-4 py-2.5 bg-[var(--surface-hover)] rounded-lg text-sm">
+                                            <button onClick={() => setParsedExpense(null)} className="px-6 py-3 neo-btn text-sm border-none!">
                                                 Discard
                                             </button>
                                         </div>
@@ -217,40 +217,43 @@ function FinanceContent() {
                     </div>
                 ) : summary ? (
                     <>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                             <div className="glass-card p-6 animate-fadeIn">
-                                <div className="flex items-center gap-3 mb-3">
-                                    <div className="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center">
-                                        <TrendingUp className="w-5 h-5 text-emerald-400" />
-                                    </div>
-                                    <span className="text-sm text-[var(--muted)]">Revenue</span>
+                                <div className="flex justify-between items-start mb-4">
+                                    <span className="text-[var(--muted)] text-xs font-bold uppercase tracking-wider">Revenue</span>
+                                    <span className="text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded text-xs font-bold flex items-center">
+                                        <TrendingUp className="w-3 h-3 mr-1" />
+                                        In
+                                    </span>
                                 </div>
-                                <p className="text-3xl font-bold text-emerald-400">{formatCurrency(summary.revenue)}</p>
-                                <p className="text-xs text-[var(--muted)] mt-1">{summary.order_count} orders</p>
+                                <p className="text-3xl font-bold tracking-tight mb-1 text-emerald-400">{formatCurrency(summary.revenue)}</p>
+                                <p className="text-xs text-[var(--muted)]">{summary.order_count} orders</p>
                             </div>
 
                             <div className="glass-card p-6 animate-fadeIn" style={{ animationDelay: "0.1s" }}>
-                                <div className="flex items-center gap-3 mb-3">
-                                    <div className="w-10 h-10 rounded-lg bg-red-500/10 flex items-center justify-center">
-                                        <TrendingDown className="w-5 h-5 text-red-400" />
-                                    </div>
-                                    <span className="text-sm text-[var(--muted)]">Expenses</span>
+                                <div className="flex justify-between items-start mb-4">
+                                    <span className="text-[var(--muted)] text-xs font-bold uppercase tracking-wider">Expenses</span>
+                                    <span className="text-red-500 bg-red-500/10 px-2 py-0.5 rounded text-xs font-bold flex items-center">
+                                        <TrendingDown className="w-3 h-3 mr-1" />
+                                        Out
+                                    </span>
                                 </div>
-                                <p className="text-3xl font-bold text-red-400">{formatCurrency(summary.expenses)}</p>
-                                <p className="text-xs text-[var(--muted)] mt-1">{summary.expense_count} entries</p>
+                                <p className="text-3xl font-bold tracking-tight mb-1 text-red-400">{formatCurrency(summary.expenses)}</p>
+                                <p className="text-xs text-[var(--muted)]">{summary.expense_count} entries</p>
                             </div>
 
                             <div className="glass-card p-6 animate-fadeIn" style={{ animationDelay: "0.2s" }}>
-                                <div className="flex items-center gap-3 mb-3">
-                                    <div className="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center">
-                                        <DollarSign className="w-5 h-5 text-purple-400" />
-                                    </div>
-                                    <span className="text-sm text-[var(--muted)]">Profit</span>
+                                <div className="flex justify-between items-start mb-4">
+                                    <span className="text-[var(--muted)] text-xs font-bold uppercase tracking-wider">Net Profit</span>
+                                    <span className="text-[var(--primary)] bg-[var(--primary)]/10 px-2 py-0.5 rounded text-xs font-bold flex items-center">
+                                        <DollarSign className="w-3 h-3 mr-1" />
+                                        Net
+                                    </span>
                                 </div>
-                                <p className={`text-3xl font-bold ${summary.profit >= 0 ? "text-emerald-400" : "text-red-400"}`}>
+                                <p className={`text-3xl font-bold tracking-tight mb-1 ${summary.profit >= 0 ? "text-emerald-400" : "text-red-400"}`}>
                                     {formatCurrency(summary.profit)}
                                 </p>
-                                <p className="text-xs text-[var(--muted)] mt-1">
+                                <p className="text-xs text-[var(--muted)]">
                                     {summary.revenue > 0 ? `${((summary.profit / summary.revenue) * 100).toFixed(1)}% margin` : "—"}
                                 </p>
                             </div>

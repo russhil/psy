@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
 @theme inline {
+  --color-background-light: var(--background-light);
+  --color-background-dark: var(--background-dark);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-surface: var(--surface);
@@ -14,108 +16,401 @@
   --color-warning: var(--warning);
   --color-danger: var(--danger);
   --color-muted: var(--muted);
+  --font-display: "Outfit", system-ui, sans-serif;
   --font-sans: "Inter", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", monospace;
 }
 
+/* ─── Light Theme ─── */
 :root {
-  --background: #0a0a0f;
-  --foreground: #f0f0f5;
-  --surface: #13131a;
-  --surface-hover: #1a1a24;
-  --border-color: #2a2a3a;
-  --primary: #8b5cf6;
-  --primary-hover: #7c3aed;
-  --primary-muted: rgba(139, 92, 246, 0.15);
-  --accent: #06b6d4;
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --primary-muted: rgba(79, 70, 229, 0.1);
+  --accent: #f43f5e;
   --success: #10b981;
   --warning: #f59e0b;
   --danger: #ef4444;
+
+  --background-light: #f0f2f5;
+  --background-dark: #0f172a;
+  --background: var(--background-light);
+  --foreground: #1e293b;
+  --surface: #e8ecf1;
+  --surface-hover: #dde2e9;
+  --border-color: #d5dbe3;
   --muted: #64748b;
+
+  /* Neomorphic Shadows — Light */
+  --neo-shadow-out: 6px 6px 14px #c5cbd3, -6px -6px 14px #ffffff;
+  --neo-shadow-out-hover: 8px 8px 18px #bec4cc, -8px -8px 18px #ffffff;
+  --neo-shadow-out-sm: 3px 3px 8px #c5cbd3, -3px -3px 8px #ffffff;
+  --neo-shadow-in: inset 4px 4px 10px #c5cbd3, inset -4px -4px 10px #ffffff;
+  --neo-shadow-in-sm: inset 2px 2px 6px #c5cbd3, inset -2px -2px 6px #ffffff;
+
+  /* Glass Variables — Light */
+  --glass-bg: rgba(255, 255, 255, 0.45);
+  --glass-border: rgba(255, 255, 255, 0.55);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+  --glass-blur: 20px;
 }
 
+/* ─── Dark Theme ─── */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: var(--background-dark);
+    --foreground: #f1f5f9;
+    --surface: #141b2d;
+    --surface-hover: #1c2540;
+    --border-color: #1e293b;
+    --muted: #94a3b8;
+
+    /* Neomorphic Shadows — Dark */
+    --neo-shadow-out: 6px 6px 14px #0a0f1a, -6px -6px 14px #1a2340;
+    --neo-shadow-out-hover: 8px 8px 18px #080d16, -8px -8px 18px #1e2a4a;
+    --neo-shadow-out-sm: 3px 3px 8px #0a0f1a, -3px -3px 8px #1a2340;
+    --neo-shadow-in: inset 4px 4px 10px #0a0f1a, inset -4px -4px 10px #1a2340;
+    --neo-shadow-in-sm: inset 2px 2px 6px #0a0f1a, inset -2px -2px 6px #1a2340;
+
+    /* Glass Variables — Dark */
+    --glass-bg: rgba(15, 23, 42, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    --glass-blur: 20px;
+  }
+}
+
+/* ─── Reset ─── */
 * {
   box-sizing: border-box;
 }
 
+/* ─── Body with Mesh Gradient ─── */
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: "Inter", system-ui, sans-serif;
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  position: relative;
 }
 
-/* Scrollbar styling */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse 80% 60% at 15% 20%, rgba(99, 102, 241, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 85% 75%, rgba(244, 63, 94, 0.06) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 50% at 50% 50%, rgba(6, 182, 212, 0.05) 0%, transparent 50%),
+    var(--background);
+  pointer-events: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  body::before {
+    background:
+      radial-gradient(ellipse 80% 60% at 15% 20%, rgba(99, 102, 241, 0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 85% 75%, rgba(244, 63, 94, 0.08) 0%, transparent 55%),
+      radial-gradient(ellipse 70% 50% at 50% 50%, rgba(6, 182, 212, 0.06) 0%, transparent 50%),
+      var(--background);
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+}
+
+/* ─── Scrollbar — Sleek Glass ─── */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
+
 ::-webkit-scrollbar-track {
-  background: var(--surface);
-}
-::-webkit-scrollbar-thumb {
-  background: var(--border-color);
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--muted);
+  background: transparent;
 }
 
-/* Table styles */
+::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0.3);
+  border-radius: 100px;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.5);
+}
+
+/* ─── Base Elements ─── */
 table {
   border-collapse: collapse;
   width: 100%;
 }
 
-/* Focus styles */
 input:focus,
 select:focus,
 textarea:focus {
-  outline: 2px solid var(--primary);
-  outline-offset: -1px;
+  outline: none;
 }
 
-/* Animations */
+/* ─── Animations ─── */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes slideIn {
-  from { opacity: 0; transform: translateX(-12px); }
-  to { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(-16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.4); }
-  50% { box-shadow: 0 0 16px 4px rgba(139, 92, 246, 0.2); }
+@keyframes subtleFloat {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes glowPulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 8px rgba(79, 70, 229, 0.2);
+  }
+
+  50% {
+    box-shadow: 0 0 20px rgba(79, 70, 229, 0.35);
+  }
 }
 
 .animate-fadeIn {
-  animation: fadeIn 0.3s ease-out;
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .animate-slideIn {
-  animation: slideIn 0.3s ease-out;
+  animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.animate-pulse-glow {
-  animation: pulse-glow 2s ease-in-out infinite;
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   GLASSMORPHISM — Structural Panels
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: 1.25rem;
+  box-shadow: var(--glass-shadow);
+  transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Glass morphism card */
-.glass-card {
-  background: rgba(19, 19, 26, 0.7);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
+.glass-panel:hover {
+  box-shadow: var(--glass-shadow), 0 0 0 1px var(--glass-border);
 }
 
-/* Gradient text */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   NEOMORPHISM — Cards
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+.neo-card {
+  background: var(--surface);
+  border-radius: 1.25rem;
+  box-shadow: var(--neo-shadow-out);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.neo-card:hover {
+  box-shadow: var(--neo-shadow-out-hover);
+  transform: translateY(-2px);
+}
+
+@media (prefers-color-scheme: dark) {
+  .neo-card {
+    border-color: rgba(255, 255, 255, 0.05);
+  }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   NEOMORPHISM — Buttons
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+.neo-btn {
+  background: var(--surface);
+  border-radius: 0.875rem;
+  box-shadow: var(--neo-shadow-out-sm);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.neo-btn:hover {
+  box-shadow: var(--neo-shadow-out);
+  transform: translateY(-1px);
+}
+
+.neo-btn:active,
+.neo-btn.active {
+  box-shadow: var(--neo-shadow-in-sm) !important;
+  border-color: transparent !important;
+  transform: translateY(0) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  .neo-btn {
+    border-color: rgba(255, 255, 255, 0.06);
+  }
+}
+
+/* Primary Button — Gradient + Glossy + Neo Shadow */
+.neo-btn-primary {
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 50%, #4338ca 100%);
+  color: white;
+  box-shadow: 4px 4px 12px rgba(79, 70, 229, 0.25),
+    -2px -2px 8px rgba(255, 255, 255, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.neo-btn-primary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+      rgba(255, 255, 255, 0.12) 0%,
+      transparent 60%);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.neo-btn-primary:hover {
+  box-shadow: 6px 6px 16px rgba(79, 70, 229, 0.35),
+    -3px -3px 10px rgba(255, 255, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
+}
+
+.neo-btn-primary:active {
+  box-shadow: inset 3px 3px 8px rgba(0, 0, 0, 0.25),
+    inset -3px -3px 8px rgba(255, 255, 255, 0.1) !important;
+  transform: translateY(0) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  .neo-btn-primary {
+    box-shadow: 4px 4px 12px rgba(79, 70, 229, 0.2),
+      -2px -2px 8px rgba(255, 255, 255, 0.04),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  .neo-btn-primary:hover {
+    box-shadow: 6px 6px 16px rgba(79, 70, 229, 0.3),
+      -3px -3px 10px rgba(255, 255, 255, 0.06),
+      inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   NEOMORPHISM — Inputs (Carved / Inset)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+.neo-input {
+  background: var(--surface);
+  border-radius: 0.875rem;
+  box-shadow: var(--neo-shadow-in);
+  border: 1px solid transparent;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.neo-input:focus {
+  box-shadow: var(--neo-shadow-in),
+    0 0 0 2px rgba(79, 70, 229, 0.15),
+    0 0 12px rgba(79, 70, 229, 0.1);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Gradient Text
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
 .gradient-text {
   background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Sidebar Nav Items
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+.nav-item {
+  border-radius: 0.875rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: transparent;
+  border: 1px solid transparent;
+}
+
+.nav-item:hover {
+  background: var(--surface);
+  box-shadow: var(--neo-shadow-out-sm);
+  transform: translateY(-1px);
+}
+
+.nav-item.active {
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+  color: white;
+  box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.2),
+    inset -3px -3px 6px rgba(255, 255, 255, 0.15);
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+@media (prefers-color-scheme: dark) {
+  .nav-item.active {
+    box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.35),
+      inset -3px -3px 6px rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
 }

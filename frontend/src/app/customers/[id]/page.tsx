@@ -98,7 +98,7 @@ function ProfileContent() {
     return (
         <div className="flex min-h-screen">
             <Sidebar />
-            <main className="flex-1 ml-64 p-8">
+            <main className="flex-1 ml-[272px] p-8">
                 {/* Back button */}
                 <button
                     onClick={() => router.push("/")}
@@ -113,7 +113,7 @@ function ProfileContent() {
                         <div className="glass-card p-6 animate-fadeIn">
                             <div className="flex items-center justify-between mb-6">
                                 <div className="flex items-center gap-4">
-                                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-cyan-500 flex items-center justify-center text-xl font-bold text-white">
+                                    <div className="w-14 h-14 rounded-2xl bg-[var(--primary)] flex items-center justify-center text-xl font-bold text-white shadow-sm">
                                         {customer.name.charAt(0)}
                                     </div>
                                     <div>
@@ -167,7 +167,7 @@ function ProfileContent() {
                                                 <input
                                                     value={editData[key] || ""}
                                                     onChange={(e) => setEditData({ ...editData, [key]: e.target.value })}
-                                                    className="w-full mt-1 px-3 py-1.5 bg-[var(--background)] border border-[var(--border-color)] rounded-lg text-sm"
+                                                    className="w-full mt-1 px-4 py-3 neo-input text-sm"
                                                 />
                                             ) : (
                                                 <p className="text-sm">{(customer as unknown as Record<string, unknown>)[key] as string || "—"}</p>
@@ -185,7 +185,7 @@ function ProfileContent() {
                                             <textarea
                                                 value={editData.notes || ""}
                                                 onChange={(e) => setEditData({ ...editData, notes: e.target.value })}
-                                                className="w-full mt-1 px-3 py-1.5 bg-[var(--background)] border border-[var(--border-color)] rounded-lg text-sm resize-none"
+                                                className="w-full mt-1 px-4 py-3 neo-input text-sm resize-none"
                                                 rows={3}
                                             />
                                         ) : (

@@ -239,7 +239,7 @@ function NewOrderContent() {
     return (
         <div className="flex min-h-screen">
             <Sidebar />
-            <main className="flex-1 ml-64 p-8">
+            <main className="flex-1 ml-[272px] p-8">
                 <div className="max-w-3xl mx-auto">
                     <h1 className="text-3xl font-bold mb-2">New Order</h1>
                     <p className="text-[var(--muted)] mb-8">Create a new order manually or upload a form image</p>
@@ -268,38 +268,38 @@ function NewOrderContent() {
                     {tab === "manual" && (
                         <>
                             {step === "form" && (
-                                <form onSubmit={handleManualSubmit} className="glass-card p-6 space-y-6 animate-fadeIn">
+                                <form onSubmit={handleManualSubmit} className="neo-card p-6 space-y-6 animate-fadeIn">
                                     <div className="grid grid-cols-2 gap-4">
                                         <div className="col-span-2">
                                             <label className="block text-sm text-[var(--muted)] mb-1">Customer Name *</label>
-                                            <input required value={manualForm.customer_name} onChange={(e) => setManualForm({ ...manualForm, customer_name: e.target.value })} className="w-full px-4 py-2.5 bg-[var(--background)] border border-[var(--border-color)] rounded-lg text-sm" />
+                                            <input required value={manualForm.customer_name} onChange={(e) => setManualForm({ ...manualForm, customer_name: e.target.value })} className="w-full px-4 py-3 neo-input text-sm" />
                                         </div>
                                         <div>
                                             <label className="block text-sm text-[var(--muted)] mb-1">Phone</label>
-                                            <input value={manualForm.phone} onChange={(e) => setManualForm({ ...manualForm, phone: e.target.value })} className="w-full px-4 py-2.5 bg-[var(--background)] border border-[var(--border-color)] rounded-lg text-sm" placeholder="+91..." />
+                                            <input value={manualForm.phone} onChange={(e) => setManualForm({ ...manualForm, phone: e.target.value })} className="w-full px-4 py-3 neo-input text-sm" placeholder="+91..." />
                                         </div>
                                         <div>
                                             <label className="block text-sm text-[var(--muted)] mb-1">Instagram</label>
-                                            <input value={manualForm.instagram} onChange={(e) => setManualForm({ ...manualForm, instagram: e.target.value })} className="w-full px-4 py-2.5 bg-[var(--background)] border border-[var(--border-color)] rounded-lg text-sm" placeholder="@handle" />
+                                            <input value={manualForm.instagram} onChange={(e) => setManualForm({ ...manualForm, instagram: e.target.value })} className="w-full px-4 py-3 neo-input text-sm" placeholder="@handle" />
                                         </div>
                                         <div>
                                             <label className="block text-sm text-[var(--muted)] mb-1">Artist</label>
-                                            <select value={manualForm.artist_id} onChange={(e) => setManualForm({ ...manualForm, artist_id: e.target.value })} className="w-full px-4 py-2.5 bg-[var(--background)] border border-[var(--border-color)] rounded-lg text-sm">
+                                            <select value={manualForm.artist_id} onChange={(e) => setManualForm({ ...manualForm, artist_id: e.target.value })} className="w-full px-4 py-3 neo-input text-sm">
                                                 <option value="">Select artist</option>
                                                 {artists.map((a) => <option key={a.id} value={a.id}>{a.name}</option>)}
                                             </select>
                                         </div>
                                         <div>
                                             <label className="block text-sm text-[var(--muted)] mb-1">Date</label>
-                                            <input type="date" value={manualForm.order_date} onChange={(e) => setManualForm({ ...manualForm, order_date: e.target.value })} className="w-full px-4 py-2.5 bg-[var(--background)] border border-[var(--border-color)] rounded-lg text-sm" />
+                                            <input type="date" value={manualForm.order_date} onChange={(e) => setManualForm({ ...manualForm, order_date: e.target.value })} className="w-full px-4 py-3 neo-input text-sm" />
                                         </div>
                                         <div className="col-span-2">
                                             <label className="block text-sm text-[var(--muted)] mb-1">Service / Product</label>
-                                            <input value={manualForm.service_description} onChange={(e) => setManualForm({ ...manualForm, service_description: e.target.value })} className="w-full px-4 py-2.5 bg-[var(--background)] border border-[var(--border-color)] rounded-lg text-sm" placeholder="e.g. Full sleeve tattoo" />
+                                            <input value={manualForm.service_description} onChange={(e) => setManualForm({ ...manualForm, service_description: e.target.value })} className="w-full px-4 py-3 neo-input text-sm" placeholder="e.g. Full sleeve tattoo" />
                                         </div>
                                         <div>
                                             <label className="block text-sm text-[var(--muted)] mb-1">Payment Mode</label>
-                                            <select value={manualForm.payment_mode} onChange={(e) => setManualForm({ ...manualForm, payment_mode: e.target.value })} className="w-full px-4 py-2.5 bg-[var(--background)] border border-[var(--border-color)] rounded-lg text-sm">
+                                            <select value={manualForm.payment_mode} onChange={(e) => setManualForm({ ...manualForm, payment_mode: e.target.value })} className="w-full px-4 py-3 neo-input text-sm">
                                                 <option value="cash">Cash</option>
                                                 <option value="UPI">UPI</option>
                                                 <option value="card">Card</option>
@@ -307,7 +307,7 @@ function NewOrderContent() {
                                         </div>
                                         <div>
                                             <label className="block text-sm text-[var(--muted)] mb-1">Source</label>
-                                            <select value={manualForm.source} onChange={(e) => setManualForm({ ...manualForm, source: e.target.value })} className="w-full px-4 py-2.5 bg-[var(--background)] border border-[var(--border-color)] rounded-lg text-sm">
+                                            <select value={manualForm.source} onChange={(e) => setManualForm({ ...manualForm, source: e.target.value })} className="w-full px-4 py-3 neo-input text-sm">
                                                 <option value="">Select source</option>
                                                 <option value="instagram">Instagram</option>
                                                 <option value="walk-in">Walk-in</option>
@@ -317,25 +317,25 @@ function NewOrderContent() {
                                         </div>
                                         <div>
                                             <label className="block text-sm text-[var(--muted)] mb-1">Deposit (₹)</label>
-                                            <input type="number" value={manualForm.deposit} onChange={(e) => setManualForm({ ...manualForm, deposit: e.target.value })} className="w-full px-4 py-2.5 bg-[var(--background)] border border-[var(--border-color)] rounded-lg text-sm" placeholder="0" />
+                                            <input type="number" value={manualForm.deposit} onChange={(e) => setManualForm({ ...manualForm, deposit: e.target.value })} className="w-full px-4 py-3 neo-input text-sm" placeholder="0" />
                                         </div>
                                         <div>
                                             <label className="block text-sm text-[var(--muted)] mb-1">Total (₹)</label>
-                                            <input type="number" value={manualForm.total} onChange={(e) => setManualForm({ ...manualForm, total: e.target.value })} className="w-full px-4 py-2.5 bg-[var(--background)] border border-[var(--border-color)] rounded-lg text-sm" placeholder="0" />
+                                            <input type="number" value={manualForm.total} onChange={(e) => setManualForm({ ...manualForm, total: e.target.value })} className="w-full px-4 py-3 neo-input text-sm" placeholder="0" />
                                         </div>
                                         <div className="col-span-2">
                                             <label className="block text-sm text-[var(--muted)] mb-1">Comments</label>
-                                            <textarea value={manualForm.comments} onChange={(e) => setManualForm({ ...manualForm, comments: e.target.value })} className="w-full px-4 py-2.5 bg-[var(--background)] border border-[var(--border-color)] rounded-lg text-sm resize-none" rows={2} />
+                                            <textarea value={manualForm.comments} onChange={(e) => setManualForm({ ...manualForm, comments: e.target.value })} className="w-full px-4 py-3 neo-input text-sm resize-none" rows={2} />
                                         </div>
                                     </div>
-                                    <button type="submit" disabled={loading} className="w-full py-3 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white rounded-lg font-medium flex items-center justify-center gap-2 disabled:opacity-50">
+                                    <button type="submit" disabled={loading} className="w-full py-3 neo-btn neo-btn-primary font-bold flex items-center justify-center gap-2 disabled:opacity-50 transition-all border-none!">
                                         {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <><ArrowRight className="w-5 h-5" /> Create Order</>}
                                     </button>
                                 </form>
                             )}
 
                             {step === "duplicate" && dupCheck && (
-                                <div className="glass-card p-6 animate-fadeIn">
+                                <div className="neo-card p-6 animate-fadeIn">
                                     <div className="flex items-center gap-3 mb-6 p-4 bg-amber-500/10 border border-amber-500/20 rounded-lg">
                                         <AlertTriangle className="w-5 h-5 text-amber-400" />
                                         <div>
@@ -357,20 +357,20 @@ function NewOrderContent() {
                                             </button>
                                         ))}
                                     </div>
-                                    <button onClick={createOrderWithNewCustomer} disabled={loading} className="w-full py-3 bg-[var(--surface-hover)] text-[var(--foreground)] rounded-lg font-medium flex items-center justify-center gap-2 hover:bg-[var(--border-color)] transition-colors">
+                                    <button onClick={createOrderWithNewCustomer} disabled={loading} className="w-full py-3 neo-btn font-medium flex items-center justify-center gap-2 transition-colors">
                                         <UserPlus className="w-5 h-5" /> Create as New Customer
                                     </button>
                                 </div>
                             )}
 
                             {step === "success" && (
-                                <div className="glass-card p-8 text-center animate-fadeIn">
+                                <div className="neo-card p-8 text-center animate-fadeIn">
                                     <CheckCircle2 className="w-16 h-16 text-[var(--success)] mx-auto mb-4" />
                                     <h2 className="text-xl font-bold mb-2">Order Created!</h2>
                                     <p className="text-[var(--muted)] mb-6">The order has been saved successfully.</p>
                                     <div className="flex gap-3 justify-center">
-                                        <button onClick={() => router.push("/")} className="px-6 py-2.5 bg-[var(--surface-hover)] rounded-lg text-sm">Go to Dashboard</button>
-                                        <button onClick={() => { setStep("form"); setManualForm({ customer_name: "", phone: "", instagram: "", artist_id: "", order_date: new Date().toISOString().split("T")[0], service_description: "", payment_mode: "cash", deposit: "", total: "", comments: "", source: "" }); }} className="px-6 py-2.5 bg-[var(--primary)] text-white rounded-lg text-sm">New Order</button>
+                                        <button onClick={() => router.push("/")} className="px-6 py-3 neo-btn text-sm">Go to Dashboard</button>
+                                        <button onClick={() => { setStep("form"); setManualForm({ customer_name: "", phone: "", instagram: "", artist_id: "", order_date: new Date().toISOString().split("T")[0], service_description: "", payment_mode: "cash", deposit: "", total: "", comments: "", source: "" }); }} className="px-6 py-3 neo-btn neo-btn-primary text-sm border-none!">New Order</button>
                                     </div>
                                 </div>
                             )}
@@ -381,7 +381,7 @@ function NewOrderContent() {
                     {tab === "ocr" && (
                         <>
                             {ocrStep === "upload" && (
-                                <div className="glass-card p-6 animate-fadeIn">
+                                <div className="neo-card p-6 animate-fadeIn">
                                     <div
                                         className="border-2 border-dashed border-[var(--border-color)] rounded-xl p-12 text-center hover:border-[var(--primary)] transition-colors cursor-pointer"
                                         onClick={() => document.getElementById("ocr-file-input")?.click()}
@@ -394,7 +394,7 @@ function NewOrderContent() {
                                         <p className="text-sm text-[var(--muted)]">Drag & drop or click to browse. Supports JPG, PNG.</p>
                                     </div>
                                     {ocrFile && (
-                                        <button onClick={handleOCRUpload} disabled={ocrLoading} className="w-full mt-4 py-3 bg-gradient-to-r from-purple-500 to-cyan-500 text-white rounded-lg font-medium flex items-center justify-center gap-2 disabled:opacity-50">
+                                        <button onClick={handleOCRUpload} disabled={ocrLoading} className="w-full mt-4 py-3 neo-btn neo-btn-primary font-bold flex items-center justify-center gap-2 disabled:opacity-50 transition-all border-none!">
                                             {ocrLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <><Camera className="w-5 h-5" /> Extract with AI</>}
                                         </button>
                                     )}
@@ -402,7 +402,7 @@ function NewOrderContent() {
                             )}
 
                             {ocrStep === "review" && ocrResult && (
-                                <div className="glass-card p-6 animate-fadeIn">
+                                <div className="neo-card p-6 animate-fadeIn">
                                     <div className="flex items-center justify-between mb-6">
                                         <h3 className="text-lg font-semibold">Extracted Data</h3>
                                         <span className={`text-sm px-3 py-1 rounded-full border ${getConfidenceColor(ocrResult.confidence)}`}>
@@ -429,14 +429,14 @@ function NewOrderContent() {
                                             </div>
                                         ))}
                                     </div>
-                                    <button onClick={handleOCRConfirm} disabled={ocrLoading} className="w-full py-3 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg font-medium flex items-center justify-center gap-2 disabled:opacity-50">
+                                    <button onClick={handleOCRConfirm} disabled={ocrLoading} className="w-full py-3 neo-btn bg-[var(--success)] text-white shadow-[4px_4px_10px_rgba(16,185,129,0.3),-4px_-4px_10px_rgba(255,255,255,0.4)] hover:shadow-[6px_6px_14px_rgba(16,185,129,0.4),-6px_-6px_14px_rgba(255,255,255,0.5)] active:shadow-[inset_4px_4px_8px_rgba(0,0,0,0.2),inset_-4px_-4px_8px_rgba(255,255,255,0.2)] font-bold flex items-center justify-center gap-2 disabled:opacity-50 border-none!">
                                         {ocrLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <><CheckCircle2 className="w-5 h-5" /> Confirm & Save</>}
                                     </button>
                                 </div>
                             )}
 
                             {ocrStep === "match" && dupCheck && (
-                                <div className="glass-card p-6 animate-fadeIn">
+                                <div className="neo-card p-6 animate-fadeIn">
                                     <div className="flex items-center gap-3 mb-6 p-4 bg-amber-500/10 border border-amber-500/20 rounded-lg">
                                         <AlertTriangle className="w-5 h-5 text-amber-400" />
                                         <div>
@@ -458,20 +458,20 @@ function NewOrderContent() {
                                             </button>
                                         ))}
                                     </div>
-                                    <button onClick={handleOCRCreateNew} disabled={ocrLoading} className="w-full py-3 bg-[var(--surface-hover)] rounded-lg font-medium flex items-center justify-center gap-2">
+                                    <button onClick={handleOCRCreateNew} disabled={ocrLoading} className="w-full py-3 neo-btn font-medium flex items-center justify-center gap-2">
                                         <UserPlus className="w-5 h-5" /> Create as New Customer
                                     </button>
                                 </div>
                             )}
 
                             {ocrStep === "success" && (
-                                <div className="glass-card p-8 text-center animate-fadeIn">
+                                <div className="neo-card p-8 text-center animate-fadeIn">
                                     <CheckCircle2 className="w-16 h-16 text-[var(--success)] mx-auto mb-4" />
                                     <h2 className="text-xl font-bold mb-2">Order Created from OCR!</h2>
                                     <p className="text-[var(--muted)] mb-6">The extracted order has been saved.</p>
                                     <div className="flex gap-3 justify-center">
-                                        <button onClick={() => router.push("/")} className="px-6 py-2.5 bg-[var(--surface-hover)] rounded-lg text-sm">Dashboard</button>
-                                        <button onClick={() => { setOcrStep("upload"); setOcrFile(null); setOcrResult(null); setOcrFields({}); }} className="px-6 py-2.5 bg-[var(--primary)] text-white rounded-lg text-sm">Upload Another</button>
+                                        <button onClick={() => router.push("/")} className="px-6 py-3 neo-btn text-sm">Dashboard</button>
+                                        <button onClick={() => { setOcrStep("upload"); setOcrFile(null); setOcrResult(null); setOcrFields({}); }} className="px-6 py-3 neo-btn neo-btn-primary text-sm border-none!">Upload Another</button>
                                     </div>
                                 </div>
                             )}
