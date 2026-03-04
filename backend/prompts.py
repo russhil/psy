@@ -8,31 +8,52 @@ Uses structured markers for parsing.
 # OCR — Gemini Vision (gemini-2.0-flash)
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-OCR_FORM_EXTRACTION_PROMPT = """You are an OCR assistant for a tattoo studio. Extract structured data from this handwritten order form image.
+OCR_FORM_EXTRACTION_PROMPT = """You are an intelligent OCR assistant for a tattoo studio CRM. Your job is to extract structured order data from images.
 
-Extract the following fields. If a field is not visible or illegible, write MISSING.
-Rate your overall confidence from 0 to 100.
+The image may contain ONE or MULTIPLE customer orders. It could be:
+- A register page with many entries (rows in a table/list)
+- A single handwritten order note or scribble
+- A casual text note, WhatsApp screenshot, or printed receipt
+- A mix of languages (English, Hindi, Hinglish)
+- Scattered text with no consistent layout
+- Abbreviations and informal shorthand (e.g. "dep", "amt", "insta", "gpay")
 
-Return the data in EXACTLY this format (one field per line):
+Your task is to INTELLIGENTLY extract ALL orders/customers found in the image.
+If a field is not present, not visible, or illegible, write MISSING.
 
+For EACH order found, output a block in this EXACT format, separated by === ORDER N === markers:
+
+=== ORDER 1 ===
 CONFIDENCE: <number 0-100>
-DATE: <date in YYYY-MM-DD format>
+DATE: <date in YYYY-MM-DD format, use today's date if not specified>
 ARTIST: <artist name>
 CUSTOMER_NAME: <customer name>
 PHONE: <phone number with country code if visible>
 INSTAGRAM: <instagram handle without @>
-SERVICE: <service or product description>
-PAYMENT_MODE: <cash/card/UPI/other>
-DEPOSIT: <deposit amount as number, 0 if none>
+SERVICE: <service or product description — tattoo type, piercing, etc.>
+PAYMENT_MODE: <cash/card/UPI/gpay/other — normalize gpay/phonepay to UPI>
+DEPOSIT: <deposit/advance amount as number, 0 if none>
 TOTAL: <total amount as number>
-COMMENTS: <any comments or notes>
-SOURCE: <how customer found the studio, e.g. instagram/walk-in/referral>
+COMMENTS: <any additional comments, notes, or special requests>
+SOURCE: <how customer found the studio: instagram/walk-in/referral/google/other>
+=== ORDER 2 ===
+CONFIDENCE: <number 0-100>
+DATE: ...
+...and so on for each order found.
 
-Important:
-- Phone numbers should include country code if visible (e.g. +91...)
-- Amounts should be numbers only, no currency symbols
-- If handwriting is unclear, make your best guess but lower the confidence
-- Do NOT add any extra text or explanation"""
+If there is only ONE order, still use the === ORDER 1 === header.
+
+Important rules:
+- Extract ALL orders/entries visible in the image. Do NOT stop at the first one.
+- A new name + phone or new name + amount usually means a new/separate order.
+- The order may be written in ANY format — do NOT expect structured fields. Parse intelligently.
+- Phone numbers: include country code if visible (e.g. +91...). 10-digit Indian numbers → prepend +91.
+- Amounts: numbers only, no currency symbols. Look for ₹, Rs, rs, INR prefixes/suffixes.
+- Common abbreviations: "dep" = deposit, "amt"/"total" = total amount, "insta" = instagram, "gpay"/"gpe" = UPI
+- If something looks like a name near a phone number, that's likely the customer name.
+- If the note mentions "walk-in", "walkin", "referred by", "from insta", etc. → extract as SOURCE.
+- If handwriting is unclear, make your best guess but lower the confidence score.
+- Do NOT add any extra text, explanation, or commentary — ONLY the structured output."""
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # NL Filter → Query (Gemma-3-27b-it)

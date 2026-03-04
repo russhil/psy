@@ -86,17 +86,17 @@ export interface WhatsAppTemplate {
     }>;
 }
 
+export interface OCROrderRow {
+    confidence: number;
+    fields: Record<string, unknown>;
+}
+
 export interface OCRResult {
     success: boolean;
     session_id?: string;
-    fields: Record<string, unknown>;
-    confidence: number;
+    orders: OCROrderRow[];
     raw_text?: string;
     error?: string;
-    duplicate_check?: {
-        matches: Customer[];
-        match_type: string;
-    };
 }
 
 export interface FilterResult {

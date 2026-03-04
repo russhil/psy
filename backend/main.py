@@ -31,7 +31,7 @@ from database import (
     get_financial_summary, get_artists, create_artist, get_artist_by_name,
 )
 from llm_provider import init_llm
-from ocr_utils import extract_order_from_image
+from ocr_utils import extract_order_from_image, extract_orders_from_image
 from nl_filter import parse_nl_filter, build_supabase_query_from_conditions, run_inference
 from expense_parser import parse_expense
 import whatsapp_utils
@@ -124,6 +124,18 @@ class OCRConfirm(BaseModel):
     customer_id: str | None = None
     create_new_customer: bool = False
     customer_data: dict | None = None
+
+
+class OCRBulkConfirmRow(BaseModel):
+    fields: dict
+    customer_id: str | None = None
+    create_new_customer: bool = True
+    customer_data: dict | None = None
+
+
+class OCRBulkConfirm(BaseModel):
+    session_id: str
+    orders: list[OCRBulkConfirmRow]
 
 
 class FilterRequest(BaseModel):
@@ -278,39 +290,32 @@ async def ocr_extract(
     file: UploadFile = File(...),
     _user: str = Depends(get_current_user),
 ):
-    """Upload an image of a handwritten form → get structured extracted fields."""
+    """Upload an image → extract multiple orders as structured fields."""
     content = await file.read()
     content_type = file.content_type or "image/png"
 
-    result = extract_order_from_image(content, mime_type=content_type)
+    result = extract_orders_from_image(content, mime_type=content_type)
 
     if result["error"]:
         return {
             "success": False,
             "error": result["error"],
-            "fields": {},
-            "confidence": 0,
+            "orders": [],
+            "raw_text": result.get("raw_text", ""),
         }
 
-    # Create an OCR session (pending)
+    # Create an OCR session (pending) with all extracted orders
     session = create_ocr_session({
-        "extracted_fields": result["fields"],
-        "confidence": result["confidence"],
+        "extracted_fields": {"orders": [o for o in result["orders"]]},
+        "confidence": max((o["confidence"] for o in result["orders"]), default=0),
         "status": "pending",
     })
-
-    # Check for customer duplicate
-    phone = result["fields"].get("phone", "")
-    instagram = result["fields"].get("instagram", "")
-    dup_check = check_duplicate_customer(phone=phone, instagram=instagram)
 
     return {
         "success": True,
         "session_id": session.get("id"),
-        "fields": result["fields"],
-        "confidence": result["confidence"],
+        "orders": result["orders"],
         "raw_text": result["raw_text"],
-        "duplicate_check": dup_check,
     }
 
 
@@ -363,6 +368,81 @@ async def ocr_confirm(req: OCRConfirm, _user: str = Depends(get_current_user)):
         "success": True,
         "order": order,
         "customer_id": customer_id,
+    }
+
+
+@app.post("/api/ocr/bulk-confirm")
+async def ocr_bulk_confirm(req: OCRBulkConfirm, _user: str = Depends(get_current_user)):
+    """Bulk confirm multiple OCR-extracted orders → create customers + orders."""
+    results = []
+    for row in req.orders:
+        try:
+            customer_id = row.customer_id
+
+            # Create new customer if requested
+            if row.create_new_customer and row.customer_data:
+                # Check for duplicate first
+                phone = row.customer_data.get("phone", "") or ""
+                instagram = row.customer_data.get("instagram", "") or ""
+                dup = check_duplicate_customer(phone=phone, instagram=instagram)
+                if dup["matches"]:
+                    # Link to existing customer
+                    customer_id = dup["matches"][0]["id"]
+                else:
+                    customer = create_customer(row.customer_data)
+                    customer_id = customer.get("id")
+
+            if not customer_id:
+                results.append({"success": False, "error": "No customer info"})
+                continue
+
+            # Resolve artist
+            artist_id = None
+            artist_name = row.fields.get("artist")
+            if artist_name:
+                artist = get_artist_by_name(artist_name)
+                if artist:
+                    artist_id = artist["id"]
+                else:
+                    artist = create_artist(artist_name)
+                    artist_id = artist.get("id")
+
+            # Create order
+            order_data = {
+                "customer_id": customer_id,
+                "artist_id": artist_id,
+                "order_date": row.fields.get("date", date.today().isoformat()),
+                "service_description": row.fields.get("service_description"),
+                "payment_mode": row.fields.get("payment_mode"),
+                "deposit": row.fields.get("deposit", 0),
+                "total": row.fields.get("total", 0),
+                "comments": row.fields.get("comments"),
+                "source": row.fields.get("source"),
+            }
+            order = create_order(order_data)
+            results.append({
+                "success": True,
+                "order_id": order.get("id"),
+                "customer_id": customer_id,
+                "customer_name": row.fields.get("customer_name", "Unknown"),
+            })
+        except Exception as e:
+            logger.error(f"[OCR Bulk] Error creating order: {e}")
+            results.append({
+                "success": False,
+                "error": str(e),
+                "customer_name": row.fields.get("customer_name", "Unknown"),
+            })
+
+    # Update OCR session
+    update_ocr_session(req.session_id, {"status": "confirmed"})
+
+    return {
+        "success": True,
+        "total": len(results),
+        "saved": sum(1 for r in results if r.get("success")),
+        "failed": sum(1 for r in results if not r.get("success")),
+        "results": results,
     }
 
 
